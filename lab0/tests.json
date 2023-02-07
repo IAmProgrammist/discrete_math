@@ -1,0 +1,199 @@
+{
+  "tasks": [
+    {
+      "tasknum": 1,
+      "enabled": true,
+      "taskid": "1",
+      "filename": "1.c",
+      "cmakelistname": "lab0_task1",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": [
+            "5",
+            ""
+          ],
+          "output": "Корней нет",
+          "explanation": "Ветви гиперболы направлены вниз, решения нет"
+        }
+      ]
+    },
+    {
+      "tasknum": 2,
+      "enabled": true,
+      "taskid": "2",
+      "filename": "2.c",
+      "cmakelistname": "62",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 3,
+      "enabled": true,
+      "taskid": "3",
+      "filename": "3.c",
+      "cmakelistname": "63",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 4,
+      "enabled": true,
+      "taskid": "4",
+      "filename": "4.c",
+      "cmakelistname": "64",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 5,
+      "enabled": true,
+      "taskid": "5",
+      "filename": "5.c",
+      "cmakelistname": "65",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 6,
+      "enabled": true,
+      "taskid": "6",
+      "filename": "6.c",
+      "cmakelistname": "66",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": "-12.9 -100.123 -1000",
+          "output": "Корней нет",
+          "explanation": "Ветви гиперболы направлены вниз, решения нет"
+        },
+        {
+          "input": "-4 -3 -0.5625",
+          "output": "-0.38",
+          "explanation": "Ветви гиперболы направлены вниз, одно решение"
+        },
+        {
+          "input": "-1 9 -8",
+          "output": "1.00 8.00",
+          "explanation": "Ветви гиперболы направлены вниз, два решения"
+        },
+        {
+          "input": "8.123 12.1232 4.6",
+          "output": "Корней нет",
+          "explanation": "Ветви гиперболы направлены вверх, решения нет"
+        },
+        {
+          "input": "1 0 0",
+          "output": "-0.00",
+          "explanation": "Ветви гиперболы направлены вверх, одно решение"
+        },
+        {
+          "input": "1.9812 4.3 -1.123123",
+          "output": "0.24 -2.41",
+          "explanation": "Ветви гиперболы направлены вверх, два решения"
+        },
+        {
+          "input": "1 13.08642 42.8135971041",
+          "output": "-6.54",
+          "explanation": "Высокая точность коэффициентов"
+        }
+      ]
+    },
+    {
+      "tasknum": 7,
+      "enabled": true,
+      "taskid": "7",
+      "filename": "7.c",
+      "cmakelistname": "67",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 8,
+      "enabled": true,
+      "taskid": "8",
+      "filename": "8.c",
+      "cmakelistname": "68",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 9,
+      "enabled": true,
+      "taskid": "9",
+      "filename": "9.c",
+      "cmakelistname": "69",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 10,
+      "enabled": true,
+      "taskid": "10",
+      "filename": "10.c",
+      "cmakelistname": "610",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 11,
+      "enabled": true,
+      "taskid": "11",
+      "filename": "11.c",
+      "cmakelistname": "611",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 12,
+      "enabled": true,
+      "taskid": "12",
+      "filename": "12.c",
+      "cmakelistname": "612",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 13,
+      "enabled": true,
+      "taskid": "13",
+      "filename": "13.c",
+      "cmakelistname": "613",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 14,
+      "enabled": true,
+      "taskid": "14",
+      "filename": "14.c",
+      "cmakelistname": "614a",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": "7",
+          "output": "1\n6",
+          "explanation": "Совершенные числа должны корректно выводиться"
+        },
+        {
+          "input": "9000",
+          "output": "1\n6\n28\n496\n8128",
+          "explanation": "Совершенные числа должны корректно выводиться при большом n"
+        }
+      ]
+    },
+    {
+      "tasknum": 14,
+      "enabled": true,
+      "taskid": "14",
+      "filename": "14.c",
+      "cmakelistname": "614b",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 15,
+      "enabled": true,
+      "taskid": "15",
+      "filename": "15.c",
+      "cmakelistname": "615",
+      "testtype": "unit"
+    },
+    {
+      "tasknum": 16,
+      "enabled": true,
+      "taskid": "16",
+      "filename": "16.c",
+      "cmakelistname": "616",
+      "testtype": "unit"
+    }
+  ]
+}

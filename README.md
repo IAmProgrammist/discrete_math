@@ -1,0 +1,2 @@
+[![Running Lab test with custom bash script](https://github.com/IAmProgrammist/programming-and-algorithmization-basics/actions/workflows/labtests.yml/badge.svg)](https://github.com/IAmProgrammist/programming-and-algorithmization-basics/actions/workflows/labtests.yml)
+# Лабораторные работы по ОП и ОА

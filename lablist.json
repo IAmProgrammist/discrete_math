@@ -1,0 +1,12 @@
+{
+  "build_dir": "./build_test",
+  "labs": [
+    {
+      "labid": 0,
+      "labname": "Подготовительная работа к работе 1.1",
+      "testsfilename": "tests.json",
+      "testsfilepath": "./lab0",
+      "enabled": false
+    }
+  ]
+}
