@@ -6,7 +6,7 @@
 #define MAX_ARRAY_SIZE 1000
 
 void testCase1() {
-    int arrayA[MAX_ARRAY_SIZE] = {4, 5, 66};
+    int arrayA[MAX_ARRAY_SIZE] = {4, 66, 5};
     int arrayB[MAX_ARRAY_SIZE] = {17, 9, 10};
     int arrayC[MAX_ARRAY_SIZE];
     size_t arrayCSize = 0, arrayASize = 3, arrayBSize = 3;
@@ -15,8 +15,8 @@ void testCase1() {
 
     assert(arrayCSize == 3);
     assert(arrayC[0] == 4 &&
-           arrayC[1] == 5 &&
-           arrayC[2] == 66);
+           arrayC[1] == 66 &&
+           arrayC[2] == 5);
 
     printf("Test 1 OK\n");
 }
@@ -64,7 +64,7 @@ void testCase4() {
 }
 
 void testCase5() {
-    int arrayA[MAX_ARRAY_SIZE] = {1, 2, 3, 4, 5};
+    int arrayA[MAX_ARRAY_SIZE] = {1, 4, 3, 2, 5};
     int arrayB[MAX_ARRAY_SIZE] = {5, 1, 10};
     int arrayC[MAX_ARRAY_SIZE];
     size_t arrayCSize = 0, arrayASize = 5, arrayBSize = 3;
@@ -72,9 +72,9 @@ void testCase5() {
     getArrayWithElementsFromANotPresentInB(arrayA, arrayASize, arrayB, arrayBSize, arrayC, &arrayCSize);
 
     assert(arrayCSize == 3);
-    assert(arrayC[0] == 2 &&
+    assert(arrayC[0] == 4 &&
            arrayC[1] == 3 &&
-           arrayC[2] == 4);
+           arrayC[2] == 2);
 
     printf("Test 5 OK\n");
 }

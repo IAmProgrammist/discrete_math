@@ -6,7 +6,7 @@
 #define MAX_ARRAY_SIZE 1000
 
 void testCase1() {
-    int arrayA[MAX_ARRAY_SIZE] = {4, 5, 12, 33};
+    int arrayA[MAX_ARRAY_SIZE] = {4, 5, 33, 12};
     int arrayB[MAX_ARRAY_SIZE] = {17, 9, 10};
     size_t arrayASize = 4, arrayBSize = 3;
 

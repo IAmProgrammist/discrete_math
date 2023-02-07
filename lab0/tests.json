@@ -10,11 +10,13 @@
       "tests": [
         {
           "input": [
-            "5",
-            ""
+            "3",
+            "1 3 2",
+            "3",
+            "10 9 8"
           ],
-          "output": "Корней нет",
-          "explanation": "Ветви гиперболы направлены вниз, решения нет"
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nTest 5 OK\n1 3 2 10 9 8 ",
+          "explanation": "Mock+Unit test"
         }
       ]
     },
@@ -23,75 +25,98 @@
       "enabled": true,
       "taskid": "2",
       "filename": "2.c",
-      "cmakelistname": "62",
-      "testtype": "unit"
+      "cmakelistname": "lab0_task2",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": [
+            "3",
+            "1 3 2",
+            "3",
+            "10 9 8"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nTest 5 OK\n",
+          "explanation": "Mock+Unit test"
+        }
+      ]
     },
     {
       "tasknum": 3,
       "enabled": true,
       "taskid": "3",
       "filename": "3.c",
-      "cmakelistname": "63",
-      "testtype": "unit"
+      "cmakelistname": "lab0_task3",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": [
+            "3",
+            "1 3 2",
+            "3",
+            "10 9 8"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nTest 5 OK\n1 3 2 ",
+          "explanation": "Mock+Unit test"
+        }
+      ]
     },
     {
       "tasknum": 4,
       "enabled": true,
       "taskid": "4",
       "filename": "4.c",
-      "cmakelistname": "64",
-      "testtype": "unit"
+      "cmakelistname": "lab0_task4",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": [
+            "1",
+            "1",
+            "1",
+            "10"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nTest 5 OK\n1 10 ",
+          "explanation": "Mock+Unit test"
+        }
+      ]
     },
     {
       "tasknum": 5,
       "enabled": true,
       "taskid": "5",
       "filename": "5.c",
-      "cmakelistname": "65",
-      "testtype": "unit"
+      "cmakelistname": "lab0_task5",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": [
+            "3",
+            "4 5 1",
+            "5",
+            "1 2 3 4 5"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nYES",
+          "explanation": "Mock+Unit test"
+        }
+      ]
     },
     {
       "tasknum": 6,
       "enabled": true,
       "taskid": "6",
       "filename": "6.c",
-      "cmakelistname": "66",
+      "cmakelistname": "lab0_task6",
       "testtype": "mock",
       "tests": [
         {
-          "input": "-12.9 -100.123 -1000",
-          "output": "Корней нет",
-          "explanation": "Ветви гиперболы направлены вниз, решения нет"
-        },
-        {
-          "input": "-4 -3 -0.5625",
-          "output": "-0.38",
-          "explanation": "Ветви гиперболы направлены вниз, одно решение"
-        },
-        {
-          "input": "-1 9 -8",
-          "output": "1.00 8.00",
-          "explanation": "Ветви гиперболы направлены вниз, два решения"
-        },
-        {
-          "input": "8.123 12.1232 4.6",
-          "output": "Корней нет",
-          "explanation": "Ветви гиперболы направлены вверх, решения нет"
-        },
-        {
-          "input": "1 0 0",
-          "output": "-0.00",
-          "explanation": "Ветви гиперболы направлены вверх, одно решение"
-        },
-        {
-          "input": "1.9812 4.3 -1.123123",
-          "output": "0.24 -2.41",
-          "explanation": "Ветви гиперболы направлены вверх, два решения"
-        },
-        {
-          "input": "1 13.08642 42.8135971041",
-          "output": "-6.54",
-          "explanation": "Высокая точность коэффициентов"
+          "input": [
+            "5",
+            "1 2 3 4 5",
+            "5",
+            "5 4 3 2 1"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nTest 5 OK\nTest 6 OK\nYES",
+          "explanation": "Mock+Unit test"
         }
       ]
     },
@@ -100,100 +125,120 @@
       "enabled": true,
       "taskid": "7",
       "filename": "7.c",
-      "cmakelistname": "67",
-      "testtype": "unit"
+      "cmakelistname": "lab0_task7",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": [
+            "8",
+            "8 6 4 2",
+            "4",
+            "7 5 1 3"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nTest 5 OK\nTest 6 OK\nYES",
+          "explanation": "Mock+Unit test"
+        }
+      ]
     },
     {
       "tasknum": 8,
       "enabled": true,
       "taskid": "8",
       "filename": "8.c",
-      "cmakelistname": "68",
-      "testtype": "unit"
+      "cmakelistname": "lab0_task8",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": [
+            "3",
+            "1 7 99",
+            "4",
+            "1 7 80 100"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\n1 7 80 99 100 ",
+          "explanation": "Mock+Unit test"
+        }
+      ]
     },
     {
       "tasknum": 9,
       "enabled": true,
       "taskid": "9",
       "filename": "9.c",
-      "cmakelistname": "69",
-      "testtype": "unit"
+      "cmakelistname": "lab0_task9",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": [
+            "5",
+            "1 2 3 4 5",
+            "3",
+            "1 3 10"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nTest 5 OK\n1 3 ",
+          "explanation": "Mock+Unit test"
+        }
+      ]
     },
     {
       "tasknum": 10,
       "enabled": true,
       "taskid": "10",
       "filename": "10.c",
-      "cmakelistname": "610",
-      "testtype": "unit"
+      "cmakelistname": "lab0_task10",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": [
+            "10",
+            "1 2 3 4 5 6 7 8 9 10",
+            "5",
+            "1 3 5 11 13"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nTest 5 OK\n2 4 6 7 8 9 10 ",
+          "explanation": "Mock+Unit test"
+        }
+      ]
     },
     {
       "tasknum": 11,
       "enabled": true,
       "taskid": "11",
       "filename": "11.c",
-      "cmakelistname": "611",
-      "testtype": "unit"
+      "cmakelistname": "lab0_task11",
+      "testtype": "mock",
+      "tests": [
+        {
+          "input": [
+            "10",
+            "1 2 3 4 5 6 7 8 9 10",
+            "5",
+            "1 5 10 11 13"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nTest 5 OK\nTest 6 OK\n2 3 4 6 7 8 9 11 13 ",
+          "explanation": "Mock+Unit test"
+        }
+      ]
     },
     {
       "tasknum": 12,
       "enabled": true,
       "taskid": "12",
       "filename": "12.c",
-      "cmakelistname": "612",
-      "testtype": "unit"
-    },
-    {
-      "tasknum": 13,
-      "enabled": true,
-      "taskid": "13",
-      "filename": "13.c",
-      "cmakelistname": "613",
-      "testtype": "unit"
-    },
-    {
-      "tasknum": 14,
-      "enabled": true,
-      "taskid": "14",
-      "filename": "14.c",
-      "cmakelistname": "614a",
+      "cmakelistname": "lab0_task12",
       "testtype": "mock",
       "tests": [
         {
-          "input": "7",
-          "output": "1\n6",
-          "explanation": "Совершенные числа должны корректно выводиться"
-        },
-        {
-          "input": "9000",
-          "output": "1\n6\n28\n496\n8128",
-          "explanation": "Совершенные числа должны корректно выводиться при большом n"
+          "input": [
+            "4",
+            "1 2 3 4",
+            "6",
+            "1 2 4 7 9 12"
+          ],
+          "output": "Test 1 OK\nTest 2 OK\nTest 3 OK\nTest 4 OK\nNO",
+          "explanation": "Mock+Unit test"
         }
       ]
-    },
-    {
-      "tasknum": 14,
-      "enabled": true,
-      "taskid": "14",
-      "filename": "14.c",
-      "cmakelistname": "614b",
-      "testtype": "unit"
-    },
-    {
-      "tasknum": 15,
-      "enabled": true,
-      "taskid": "15",
-      "filename": "15.c",
-      "cmakelistname": "615",
-      "testtype": "unit"
-    },
-    {
-      "tasknum": 16,
-      "enabled": true,
-      "taskid": "16",
-      "filename": "16.c",
-      "cmakelistname": "616",
-      "testtype": "unit"
     }
   ]
 }

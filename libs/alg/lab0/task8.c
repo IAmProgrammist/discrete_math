@@ -20,5 +20,4 @@ void uniteArrays(const int *const arrayA, const size_t arrayASize,
         else
             i++;
     }
-
 }

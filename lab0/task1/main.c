@@ -6,8 +6,8 @@
 #define MAX_ARRAY_SIZE 1000
 
 void testCase1() {
-    int arrayA[MAX_ARRAY_SIZE] = {1, 2, 3};
-    int arrayB[MAX_ARRAY_SIZE] = {8, 9, 10};
+    int arrayA[MAX_ARRAY_SIZE] = {1, 3, 2};
+    int arrayB[MAX_ARRAY_SIZE] = {10, 9, 8};
     int arrayC[MAX_ARRAY_SIZE];
     size_t arrayCSize = 0, arrayASize = 3, arrayBSize = 3;
 
@@ -15,17 +15,17 @@ void testCase1() {
 
     assert(arrayCSize == 6);
     assert(arrayC[0] == 1 &&
-           arrayC[1] == 2 &&
-           arrayC[2] == 3 &&
-           arrayC[3] == 8 &&
+           arrayC[1] == 3 &&
+           arrayC[2] == 2 &&
+           arrayC[3] == 10 &&
            arrayC[4] == 9 &&
-           arrayC[5] == 10);
+           arrayC[5] == 8);
 
     printf("Test 1 OK\n");
 }
 
 void testCase2() {
-    int arrayA[MAX_ARRAY_SIZE] = {1, 2, 3};
+    int arrayA[MAX_ARRAY_SIZE] = {1, 3, 2};
     int arrayB[MAX_ARRAY_SIZE] = {};
     int arrayC[MAX_ARRAY_SIZE];
     size_t arrayCSize = 0, arrayASize = 3, arrayBSize = 0;
@@ -34,24 +34,24 @@ void testCase2() {
 
     assert(arrayCSize == 3);
     assert(arrayC[0] == 1 &&
-           arrayC[1] == 2 &&
-           arrayC[2] == 3);
+           arrayC[1] == 3 &&
+           arrayC[2] == 2);
 
     printf("Test 2 OK\n");
 }
 
 void testCase3() {
     int arrayA[MAX_ARRAY_SIZE] = {};
-    int arrayB[MAX_ARRAY_SIZE] = {8, 9, 10};
+    int arrayB[MAX_ARRAY_SIZE] = {10, 9, 8};
     int arrayC[MAX_ARRAY_SIZE];
     size_t arrayCSize = 0, arrayASize = 0, arrayBSize = 3;
 
     uniteArraysWithoutRepeating(arrayA, arrayASize, arrayB, arrayBSize, arrayC, &arrayCSize);
 
     assert(arrayCSize == 3);
-    assert(arrayC[0] == 8 &&
+    assert(arrayC[0] == 10 &&
            arrayC[1] == 9 &&
-           arrayC[2] == 10);
+           arrayC[2] == 8);
 
     printf("Test 3 OK\n");
 }
@@ -70,7 +70,7 @@ void testCase4() {
 }
 
 void testCase5() {
-    int arrayA[MAX_ARRAY_SIZE] = {1, 2, 3, 4, 5};
+    int arrayA[MAX_ARRAY_SIZE] = {1, 4, 3, 2, 5};
     int arrayB[MAX_ARRAY_SIZE] = {5, 1, 10};
     int arrayC[MAX_ARRAY_SIZE];
     size_t arrayCSize = 0, arrayASize = 5, arrayBSize = 3;
@@ -79,9 +79,9 @@ void testCase5() {
 
     assert(arrayCSize == 6);
     assert(arrayC[0] == 1 &&
-           arrayC[1] == 2 &&
+           arrayC[1] == 4 &&
            arrayC[2] == 3 &&
-           arrayC[3] == 4 &&
+           arrayC[3] == 2 &&
            arrayC[4] == 5 &&
            arrayC[5] == 10);
 
