@@ -18,14 +18,5 @@ bool isArraysConsistsOfDifferentElements(const int *const arrayA, const size_t a
         result = j == arrayBSize;
     }
 
-    // Аналогично проверим массив B
-    for (size_t i = 0; i < arrayBSize && result; i++) {
-        size_t j = 0;
-        while (j < arrayASize && arrayB[i] != arrayA[j])
-            j++;
-
-        result = j == arrayASize;
-    }
-
     return result;
 }
