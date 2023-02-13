@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(programming_and_algorithmization_basics C)
+project(discrete_math C)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -44,5 +44,8 @@ target_link_libraries(lab0_task11 alg)
 
 add_executable(lab0_task12 ./lab0/task12/main.c)
 target_link_libraries(lab0_task12 alg)
+
+add_executable(lab1_task3_4 ./lab1/main.c)
+target_link_libraries(lab1_task3_4 alg)
 
 # Zero library
