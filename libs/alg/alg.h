@@ -74,7 +74,7 @@ bool includesBool(const bool *const arrayA,
 bool equalBool(const bool *const arrayA,
                const bool *const arrayB, const size_t universumSize);
 
-void fillUniversumBool(const bool *const arrayA, bool *const arrayC, const size_t universumSize);
+void fillUniversumBool(const bool *const arrayA, bool *const arrayB, const size_t universumSize);
 
 bool includesStrictBool(const bool *const arrayA,
                         const bool *const arrayB, const size_t universumSize);

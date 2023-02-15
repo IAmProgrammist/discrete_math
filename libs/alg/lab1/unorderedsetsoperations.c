@@ -160,11 +160,46 @@ bool equalUnordered(const int *const arrayA, const size_t arrayASize,
 void fillUniversumUnordered(const int *const arrayA, const size_t arrayASize,
                          const int *const universum, const size_t universumSize,
                          int *arrayC, size_t *const arrayCSize) {
-    differenceUnordered(universum, universumSize, arrayA, arrayASize, arrayC, arrayCSize);
+    // Создаём указатель на первый элемент массива С
+    int *cBegin = arrayC;
+
+    // Копируем элементы из массива A в C, кроме того проверяем,
+    // что копируемый элемент не встречается в универсуме
+    for (size_t i = 0; i < arrayASize; ++i) {
+
+        // Проверяем, что элемента нет в универсуме
+        int j = 0;
+        while (j < universumSize && arrayA[i] != universum[j])
+            j++;
+
+        // Если его нет, добавляем в массив C новый элемент
+        if (j == universumSize)
+            *(arrayC++) = arrayA[i];
+    }
+
+    // Длина итогового массива - разница указателя на последний и первый элемент
+    *arrayCSize = arrayC - cBegin;
 }
 
 bool includesStrictUnordered(const int *const arrayA, const size_t arrayASize,
                              const int *const arrayB, const size_t arrayBSize) {
-    return !equalUnordered(arrayA, arrayASize, arrayB, arrayBSize) &&
-           includesUnordered(arrayA, arrayASize, arrayB, arrayBSize);
+    // Если массивы равны, то их размеры равны, а значит A не включен строго в B
+    // Если массивы не равны, но их размеры равны, значит в A встречаются элементы, которых нет в B,
+    // проверять дальше тоже нет смысла.
+    bool result = arrayASize != arrayBSize;
+
+    // Проверим, что каждый элемент A находится в B, если обнаружится что это не так, то result будет false,
+    // и смысла продолжать перебор далее не будет
+    for (size_t i = 0; i < arrayASize && result; i++) {
+        // Просто перебор
+        size_t j = 0;
+        while (j < arrayBSize && arrayA[i] != arrayB[j])
+            j++;
+
+        // Присваиваем result результат перебора, если что-то нашлось, result остаётся без изменений
+        // Иначе - становится false.
+        result = j != arrayBSize;
+    }
+
+    return result;
 }

@@ -100,7 +100,7 @@ bool includesOrdered(const int *const arrayA, const size_t arrayASize,
             // Второй случай. A[i] > B[j].  Продолжаем поиск
         else if (i == arrayASize || arrayA[i] > arrayB[j])
             j++;
-            // Третий случай. Элементы равны, в этом случае нужно сдвинуть индекс i
+        // Третий случай. Элементы равны, в этом случае нужно сдвинуть индекс i
         else
             i++;
     }
@@ -110,19 +110,58 @@ bool includesOrdered(const int *const arrayA, const size_t arrayASize,
 
 bool equalOrdered(const int *const arrayA, const size_t arrayASize,
                                     const int *const arrayB, const size_t arrayBSize) {
-    return arrayASize == arrayBSize &&
-           includesOrdered(arrayA, arrayASize, arrayB, arrayBSize) &&
-           includesOrdered(arrayB, arrayBSize, arrayA, arrayASize);
+    // Если упорядоченные массивы равны, логично предположить, что и размеры их тоже равны
+    if (arrayASize != arrayBSize)
+        return false;
+
+    for (size_t i = 0; i < arrayASize; i++) {
+        if (arrayA[i] != arrayB[i])
+            return false;
+    }
+
+    return true;
 }
 
 void fillUniversumOrdered(const int *const arrayA, const size_t arrayASize,
                          const int *const universum, const size_t universumSize,
                          int *arrayC, size_t *const arrayCSize) {
-    differenceOrdered(universum, universumSize, arrayA, arrayASize, arrayC, arrayCSize);
+    // Индексы в массиве A и B
+    size_t i = 0, j = 0;
+
+    // Пока индексы не указывают на конец массива выполняем цикл
+    while (i < arrayASize || j < universumSize) {
+        // Первый случай. Элемент из A оказался меньше элемента из универсума или индекс j указывает на конец универсума
+        // Если A[i] < universum[j], то в универсуме больше никогда не встретится A[i], так как все последующие элементы
+        // будут больше universum[j], поэтому можем добавлять элемент в C.
+
+        if (i < arrayASize && arrayA[i] < universum[j])
+            arrayC[(*arrayCSize)++] = arrayA[i++];
+        // Второй случай. universum[j] < A[i]. Здесь пока ничего не ясно, сдвигаем j индекс
+        else if (arrayA[i] > universum[j])
+            j++;
+        // Третий случай. Элементы равны, поэтому переходим к следующему элементу A увеличивая i
+        else
+            i++;
+    }
 }
 
 bool includesStrictOrdered(const int *const arrayA, const size_t arrayASize,
                              const int *const arrayB, const size_t arrayBSize) {
-    return !equalOrdered(arrayA, arrayASize, arrayB, arrayBSize) &&
-           includesOrdered(arrayA, arrayASize, arrayB, arrayBSize);
+    size_t i = 0, j = 0;
+    // Если B включает A и A != B, то и размеры их не будут равны
+    bool result = arrayASize != arrayBSize;
+
+    while ((i < arrayASize || j < arrayBSize) && result) {
+        // Первый случай. A[i] < B[j]. Элемент в массиве не найден, присваиваем result значение false
+        if (j == arrayBSize || (i < arrayASize && arrayA[i] < arrayB[j]))
+            result = false;
+        // Второй случай. A[i] > B[j].  Продолжаем поиск
+        else if (i == arrayASize || arrayA[i] > arrayB[j])
+            j++;
+        // Третий случай. Элементы равны, в этом случае нужно сдвинуть индекс i
+        else
+            i++;
+    }
+
+    return result;
 }
