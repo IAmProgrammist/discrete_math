@@ -102,7 +102,7 @@ bool includesOrdered(const int *const arrayA, const size_t arrayASize,
 bool equalOrdered(const int *const arrayA, const size_t arrayASize,
                   const int *const arrayB, const size_t arrayBSize);
 
-void fillUniversumOrdered(const int *const arrayA, const size_t arrayASize,
+void fillUniversumOrdered(const int *const array, const size_t arraySize,
                           const int *const universum, const size_t universumSize,
                           int *arrayC, size_t *const arrayCSize);
 
