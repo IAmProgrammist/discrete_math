@@ -16,9 +16,12 @@ void uniteOrdered(const int *const arrayA, const size_t arrayASize,
             // Второй случай. Копируем значение из B если индекс A указывает на конец массива или
             // элемент из B меньше элемента из A
             arrayC[(*arrayCSize)++] = arrayB[j++];
-        else
-            // Третий случай. Элементы равны, в этом случае нужно сдвинуть любой из индексов, здесь мог быть как i, так и j
+        else {
+            // Третий случай. Элементы равны, сохраняем его в С и свдигаем оба индекса
+            arrayC[(*arrayCSize)++] = arrayA[i];
             i++;
+            j++;
+        }
 
     // Копируем оставшиеся элементы из A если таковые есть
     while (i < arrayASize)
@@ -43,9 +46,12 @@ void intersectOrdered(const int *const arrayA, const size_t arrayASize,
             // Второй случай. A больше элемента из B
         else if (arrayA[i] > arrayB[j])
             j++;
-            // Третий случай. A равен элементу из B. В третьем случае копируем элемент и сдвигаем индекс массива A
-        else
-            arrayC[(*arrayCSize)++] = arrayA[i++];
+            // Третий случай. A равен элементу из B. В третьем случае копируем элемент и сдвигаем оба индекса
+        else {
+            arrayC[(*arrayCSize)++] = arrayA[i];
+            i++;
+            j++;
+        }
 }
 
 void differenceOrdered(const int *const arrayA, const size_t arrayASize,
@@ -66,9 +72,11 @@ void differenceOrdered(const int *const arrayA, const size_t arrayASize,
         else if (arrayA[i] > arrayB[j])
             // Второй случай. B[j] < A[i]. Здесь пока ничего не ясно, сдвигаем j
             j++;
-        else
-            // Третий случай. Элементы равны, поэтому переходим к следующему элементу A увеличивая i
+        else {
+            // Третий случай. Элементы равны, поэтому переходим к следующему элементу A увеличивая i и j
             i++;
+            j++;
+        }
 
     // Копируем оставшиеся элементы из A если таковые есть
     while (i < arrayASize)
@@ -152,8 +160,10 @@ void fillUniversumOrdered(const int *const array, const size_t arraySize,
             arrayC[(*arrayCSize)++] = universum[i++];
         else if (universum[i] > array[j])
             j++;
-        else
+        else {
             i++;
+            j++;
+        }
 
     while (i < universumSize)
         arrayC[(*arrayCSize)++] = universum[i++];
@@ -162,8 +172,7 @@ void fillUniversumOrdered(const int *const array, const size_t arraySize,
 bool includesStrictOrdered(const int *const arrayA, const size_t arrayASize,
                            const int *const arrayB, const size_t arrayBSize) {
     size_t i = 0, j = 0;
-    // Отличием от нестрогого включения является то, что размеры массивов не должны быть равны
-    // Если A включено в B и A != B, то их размеры не должны быть равны
+    // Отличием от нестрогого включения является то, что если A и включено в B, их размеры не должны быть равны
     bool result = arrayASize < arrayBSize &&
                   arrayA[arrayASize - 1] <= arrayB[arrayBSize - 1];
 
