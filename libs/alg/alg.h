@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
 
 void uniteArraysWithoutRepeating(const int *const arrayA, const size_t arrayASize,
                                  const int *const arrayB, const size_t arrayBSize,
@@ -74,7 +75,8 @@ bool includesBool(const bool *const arrayA,
 bool equalBool(const bool *const arrayA,
                const bool *const arrayB, const size_t universumSize);
 
-void fillUniversumBool(const bool *const arrayA, bool *const arrayB, const size_t universumSize);
+void fillUniversumBool(const bool *const arrayA, const bool *const universum, bool *const arrayB,
+                       const size_t universumSize);
 
 bool includesStrictBool(const bool *const arrayA,
                         const bool *const arrayB, const size_t universumSize);

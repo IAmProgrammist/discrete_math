@@ -154,16 +154,18 @@ void fillUniversumOrdered(const int *const array, const size_t arraySize,
                           int *arrayC, size_t *const arrayCSize) {
     // Алгоритм схож с алгоритмом разницы множеств
     size_t i = 0, j = 0;
+    // Проверяем, что универсум действительно универсум
+    assert(array[arraySize - 1] <= universum[universumSize - 1]);
 
-    while (i < universumSize && j < arraySize)
+    while (i < universumSize && j < arraySize) {
         if (universum[i] < array[j])
             arrayC[(*arrayCSize)++] = universum[i++];
-        else if (universum[i] > array[j])
-            j++;
-        else {
+        else if (universum[i] == array[j]){
             i++;
             j++;
-        }
+        // вторым его отличием будет то, что если элемент есть в A и его нет в universum, программа будет падать
+        } else assert(array[j] >= universum[i]);
+    }
 
     while (i < universumSize)
         arrayC[(*arrayCSize)++] = universum[i++];

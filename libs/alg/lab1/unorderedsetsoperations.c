@@ -163,18 +163,29 @@ void fillUniversumUnordered(const int *const arrayA, const size_t arrayASize,
     // Создаём указатель на первый элемент массива С
     int *cBegin = arrayC;
 
-    // Копируем элементы из массива A в C, кроме того проверяем,
-    // что копируемый элемент не встречается в универсуме
+    // Здесь проверим, что universum действительно универсум
     for (size_t i = 0; i < arrayASize; ++i) {
 
-        // Проверяем, что элемента нет в универсуме
+        // Проверяем, что элемента из A нет в универсуме
         int j = 0;
         while (j < universumSize && arrayA[i] != universum[j])
             j++;
 
-        // Если его нет, добавляем в массив C новый элемент
-        if (j == universumSize)
-            *(arrayC++) = arrayA[i];
+        // Если его нет в универсуме, падаем
+        assert(j < universumSize);
+    }
+
+    // После проверки можем приступать к копированию из универсума в C
+    for (size_t i = 0; i < universumSize; ++i) {
+
+        // Находим элемент из универсума в A
+        int j = 0;
+        while (j < arrayASize && arrayA[j] != universum[i])
+            j++;
+
+        // Элемент из универсума не найден, поэтому копируем его в C
+        if (j == arrayASize)
+            *(arrayC++) = universum[i];
     }
 
     // Длина итогового массива - разница указателя на последний и первый элемент
