@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
-project(discrete_math C)
+project(discrete_math C CXX)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -47,5 +47,11 @@ target_link_libraries(lab0_task12 alg)
 
 add_executable(lab1_task3_4 ./lab1/main.c)
 target_link_libraries(lab1_task3_4 alg)
+
+add_executable(lab3_task7 lab3/task7/main.cpp)
+target_link_libraries(lab3_task7 alg)
+
+add_executable(lab3_task8 lab3/task8/main.cpp)
+target_link_libraries(lab3_task8 alg)
 
 # Zero library
