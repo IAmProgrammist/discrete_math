@@ -1,4 +1,4 @@
-#include "../alg.h"
+#include "../algc.h"
 
 void uniteOrdered(const int *const arrayA, const size_t arrayASize,
                   const int *const arrayB, const size_t arrayBSize,

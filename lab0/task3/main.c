@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../../libs/alg/alg.h"
+#include "../../libs/alg/algc.h"
 
 #define MAX_ARRAY_SIZE 1000
 

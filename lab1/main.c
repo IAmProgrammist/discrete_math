@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../libs/alg/alg.h"
+#include "../libs/alg/algc.h"
 
 #define MAX_ARRAY_SIZE 10000
 

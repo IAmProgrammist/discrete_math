@@ -1,4 +1,4 @@
-#include "../alg.h"
+#include "../algc.h"
 
 void uniteBool(const bool *const arrayA,
                   const bool *const arrayB,

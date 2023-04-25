@@ -3,6 +3,8 @@ SET(lab0funcs ./lab0/task1.c ./lab0/task2.c ./lab0/task3.c  ./lab0/task4.c  ./la
 
 SET (lab1funcs ./lab1/boolsetsoperations.c ./lab1/orderedsetsoperations.c ./lab1/unorderedsetsoperations.c)
 
-add_library(alg alg.h ${lab0funcs} ${lab1funcs})
+SET (lab3funcs ./algcpp.h)
+
+add_library(alg ${lab0funcs} ${lab1funcs} ${lab3funcs})
 
 target_link_libraries(alg m)
