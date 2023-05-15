@@ -13,13 +13,17 @@ workingTime = (duration_cast<std::chrono::milliseconds>(std::chrono::system_cloc
 }
 
 int main() {
+    for (auto &sizes : {5, 7, 9, 11, 12, 13}) {
+        std::cout << sizes << std::endl;
+        std::vector<int> base(sizes, 42);
 
-    for (int i = 0; i < 120; i++) {
-        std::vector<int> base(i, i);
-        double workingTime;
+        for (size_t k = 0; k <= sizes; k++) {
+            auto combinations = getCombinations(base, k);
 
-        clockExperiment({ std::vector<std::vector<int>> subsets = getSubsets(base); }, workingTime);
-
-        std::cout << i << " " << workingTime << std::endl;
+            std::cout << k << " " << combinations.size() << std::endl;
+        }
+        std::cout << std::endl << std::endl;
     }
+
+    return 0;
 }

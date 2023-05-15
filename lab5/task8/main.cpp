@@ -13,13 +13,13 @@ workingTime = (duration_cast<std::chrono::milliseconds>(std::chrono::system_cloc
 }
 
 int main() {
-
     for (int i = 0; i < 120; i++) {
         std::vector<int> base(i, i);
-        double workingTime;
+        std::vector<std::vector<int>> subsets = getPermutations(base);
+        //double workingTime;
 
-        clockExperiment({ std::vector<std::vector<int>> subsets = getSubsets(base); }, workingTime);
+        //clockExperiment({ std::vector<std::vector<int>> subsets = getPermutations(base); }, workingTime);
 
-        std::cout << i << " " << workingTime << std::endl;
+        std::cout << i << " " << subsets.size() << std::endl;
     }
 }
