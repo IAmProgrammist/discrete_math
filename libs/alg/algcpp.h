@@ -230,10 +230,11 @@ std::vector<std::vector<T>> getPermutations(std::vector<T> baseSet, std::vector<
         newBaseSet.erase(std::begin(newBaseSet) + i);
 
         // Добавляем в текущее множество новый элемент
-        currentSet.push_back(baseSet[i]);
+        std::vector<T> newCurrentSet(currentSet);
+        newCurrentSet.push_back(baseSet[i]);
 
         // Выполняем следующий шаг итерации, сохраняем в итоговый массив множеств
-        auto permutations = getPermutations(newBaseSet, currentSet);
+        auto permutations = getPermutations(newBaseSet, newCurrentSet);
         resultPerms.insert(std::begin(resultPerms), std::begin(permutations), std::end(permutations));
     }
 
