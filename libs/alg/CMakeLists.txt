@@ -3,7 +3,7 @@ SET(lab0funcs ./lab0/task1.c ./lab0/task2.c ./lab0/task3.c  ./lab0/task4.c  ./la
 
 SET (lab1funcs ./lab1/boolsetsoperations.c ./lab1/orderedsetsoperations.c ./lab1/unorderedsetsoperations.c)
 
-SET (lab3funcs ./algcpp.h)
+SET (lab3funcs ./algcpp.h ./lab3/set.tpp)
 
 SET (lab5funcs ./lab5/subsetgenerator.cpp)
 

@@ -34,7 +34,7 @@ int main() {
         // Проверяем, что левая и правая части уравнений равны
         if (left(x) != right(x)) {
                 std::cerr << "Множество" << std::endl;
-                x.print(std::cerr);
+                std::cerr << x << std::endl;
                 std::cerr << "не является решением уравнения" << std::endl;
                 return 1;
         }

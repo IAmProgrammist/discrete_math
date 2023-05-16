@@ -9,8 +9,7 @@ int main() {
     Sett<int> F3 = A.non(U) - C;
     Sett<int> F4 = B - A - C;
 
-    F3.print();
-    F4.print();
+    std::cout << F3 << std::endl << F4 << std::endl;
 
     return 0;
 }

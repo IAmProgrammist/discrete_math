@@ -10,6 +10,5 @@ int main() {
     Sett<int> phiNothing = ((A * (B + nothing)) ^ C) ^ (A - ((B * nothing.non(U)) ^ (C * nothing)));
     Sett<int> nonPhiU = (((A * (B + U)) ^ C) ^ (A - ((B * U.non(U)) ^ (C * U)))).non(U);
 
-    phiNothing.print();
-    nonPhiU.print();
+    std::cout << phiNothing << std::endl << nonPhiU << std::endl;
 }
