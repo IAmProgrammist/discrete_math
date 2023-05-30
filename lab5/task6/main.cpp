@@ -25,5 +25,10 @@ int main() {
         std::cout << std::endl << std::endl;
     }
 
+    std::vector<int> her = {1,2,3,4,5};
+    auto j = getCombinations(her, 3);
+
+    std::cout << j.size() << " " << getPlacements(her, 3).size();
+
     return 0;
 }

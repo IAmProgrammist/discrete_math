@@ -5,8 +5,8 @@ SET (lab1funcs ./lab1/boolsetsoperations.c ./lab1/orderedsetsoperations.c ./lab1
 
 SET (lab3funcs ./algcpp.h ./lab3/set.tpp)
 
-SET (lab5funcs ./lab5/subsetgenerator.cpp)
+SET (lab6funcs ./lab6/task6.cpp)
 
-add_library(alg ${lab0funcs} ${lab1funcs} ${lab3funcs})
+add_library(alg ${lab0funcs} ${lab1funcs} ${lab3funcs} ${lab6funcs})
 
 target_link_libraries(alg m)

@@ -4,29 +4,36 @@
 #include <vector>
 #include <iostream>
 
-template <class T>
+template<class T>
 class Sett {
 public:
     std::vector<T> elements;
 
     Sett<T>(std::vector<T> elms);
+
     Sett<T> operator*(Sett<T> anotherSet);
+
     Sett<T> operator-(Sett<T> anotherSet);
+
     Sett<T> operator+(Sett<T> anotherSet);
+
     Sett<T> non(Sett<T> universum);
+
     Sett<T> operator^(Sett<T> anotherSet);
+
     bool operator==(Sett<T> other);
+
     bool operator!=(Sett<T> other);
 };
 
 #include "./lab3/set.tpp"
 
-template <typename T>
-std::vector<std::vector<T>> getSubsets(std::vector<T>& baseSet, std::vector<T> currentSet,
+template<typename T>
+std::vector<std::vector<T>> getSubsets(std::vector<T> &baseSet, std::vector<T> currentSet,
                                        size_t count);
 
-template <typename T>
-std::vector<std::vector<T>> getSubsets(std::vector<T>& baseSet);
+template<typename T>
+std::vector<std::vector<T>> getSubsets(std::vector<T> &baseSet);
 
 #include "./lab5/subsets.tpp"
 
@@ -52,5 +59,12 @@ template<typename T>
 std::vector<std::vector<T>> getPlacements(std::vector<T> &baseSet, size_t k);
 
 #include "./lab5/placements.tpp"
+
+struct Point {
+    long long x;
+    long long y;
+};
+
+size_t getDecision(size_t n, Point a, size_t k);
 
 #endif //DISCRETE_MATH_ALGCPP_H
