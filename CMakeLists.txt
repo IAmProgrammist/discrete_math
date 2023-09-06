@@ -80,4 +80,7 @@ target_link_libraries(lab6_task5 alg)
 add_executable(lab6_task6 lab6/task6/test.cpp)
 target_link_libraries(lab6_task6 alg)
 
+add_executable(lesson060923_task1 lesson060923/task1.c)
+target_link_libraries(lesson060923_task1 alg)
+
 # Zero library

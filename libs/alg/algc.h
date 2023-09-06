@@ -145,6 +145,41 @@ void fillUniversumUnordered(const int *const arrayA, const size_t arrayASize,
 bool includesStrictUnordered(const int *const arrayA, const size_t arrayASize,
                              const int *const arrayB, const size_t arrayBSize);
 
+#define CORRESPONDENCE_SIZE 5
+
+void initCorrespondence(bool ***corr, int size);
+
+void clearCorrespondence(bool **corr, int size);
+
+void inputCorrespondence(bool **corr, int amount);
+
+// Соответствие называется функцией, если элемент из области определения
+// Имеет один и только один элемент из области значения.
+// С точки зрения программы, в ряду может не быть или быть только одно значение true
+// Иначе, соответствие - не функция.
+bool isFunction(bool **corr, int size);
+
+// Если область определения равна области отправления, функция является отображением.
+// С точки зрения программы, если хоть в одном из рядов содержатся только нули,
+// соответствие - не отображение.
+bool isDisplay(bool **corr, int size);
+
+// Если область значений равна области прибытия, функция является суръективной.
+// С точки зрения программы, если хоть в одном из столбцов содержатся только нули,
+// соответствие - не отображение.
+bool isSurjective(bool **corr, int size);
+
+// Функция называется инъекцией, если различные элементы из облас-
+//ти определения имеют различные образы или, по другому, если прооб-
+//разом любого элемента из области значений является одноэлементное
+//множество.
+// С точки зрения программы, в столбце может быть 0 или 1 единиц
+bool isInjective(bool **corr, int size);
+
+// Отображение биективно, если коръективно и инъективно
+// С точки зрения программы всё тоже просто - используем готовые функции.
+bool isBijective(bool **corr, int size);
+
 #ifdef __cplusplus
 }
 #endif

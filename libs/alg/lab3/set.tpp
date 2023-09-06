@@ -1,9 +1,11 @@
 #pragma once
 
+#include <algorithm>
+
 template <typename T>
 Sett<T>::Sett(std::vector<T> elms) {
     elements = elms;
-    std::sort(elements.begin(), elements.end());
+    std::qsort(elements.begin(), elements.end());
 }
 
 template <typename T>
