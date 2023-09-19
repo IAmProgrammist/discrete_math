@@ -87,3 +87,6 @@ fabric.properties
 /libs/cJSON/
 
 .DS_Store
+
+build
+.vscode

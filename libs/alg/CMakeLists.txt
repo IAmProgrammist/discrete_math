@@ -7,8 +7,10 @@ SET (lab3funcs ./algcpp.h ./lab3/set.tpp)
 
 SET (lab6funcs ./lab6/task6.cpp)
 
+SET (lab7funcs ./lab7/task13.cpp ./lab7/task14.cpp)
+
 SET(lesson060923 ./lesson060923/task1.c)
 
-add_library(alg ${lab0funcs} ${lab1funcs} ${lab3funcs} ${lab6funcs} ${lesson060923})
+add_library(alg ${lab0funcs} ${lab1funcs} ${lab3funcs} ${lab6funcs} ${lab7funcs} ${lesson060923})
 
 target_link_libraries(alg m)
