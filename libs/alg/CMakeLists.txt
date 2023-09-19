@@ -7,7 +7,7 @@ SET (lab3funcs ./algcpp.h ./lab3/set.tpp)
 
 SET (lab6funcs ./lab6/task6.cpp)
 
-SET (lab7funcs ./lab7/task13.cpp ./lab7/task14.cpp)
+SET (lab7funcs ./lab7/task13.cpp ./lab7/task14.cpp ./lab7/task23.cpp)
 
 SET(lesson060923 ./lesson060923/task1.c)
 

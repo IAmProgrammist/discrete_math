@@ -100,6 +100,27 @@ public:
     BoolMatrixRelation compose(BoolMatrixRelation b);
     BoolMatrixRelation pow(int p);
 
+    static BoolMatrixRelation getIdentity(int size);
+    static BoolMatrixRelation getUniversum(int size);
+
+    bool isEmpty();
+
+    bool isReflexive();
+    bool isAntiReflexive();
+    bool isSymmetric();
+    bool isAntiSymmetric();
+    bool isTransitive();
+    bool isAntiTransitive();
+    bool isFull();
+    bool isTolerant();
+    bool isEquivalent();
+    bool isOrdered();
+    bool isOrderedNonStrict();
+    bool isOrderedStrict();
+    bool isOrderedLinear();
+    bool isOrderedLinearNonStrict();
+    bool isOrderedLinearStrict();
+
     friend std::ostream& operator<<(std::ostream& out, BoolMatrixRelation &val) {
         out << std::setw(3) << "" << " ";
         for (int i = 1; i <= val.size; i++) {

@@ -75,18 +75,15 @@ BoolMatrixRelation BoolMatrixRelation::transpose()
 BoolMatrixRelation BoolMatrixRelation::compose(BoolMatrixRelation b)
 {
     if (this->size != b.size) return BoolMatrixRelation::getDefault();
-    BoolMatrixRelation composeResult(size, [](int x, int y){return false;});
-
-    for (int z = 0; z < size; z++) {
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                if (data[x][z] && data[z][y])
-                composeResult.data[x][y] = true;
-            }
+    
+    return BoolMatrixRelation(size, [this, &b](int x, int y) {
+        for (int z = 0; z < size; z++) {
+            if (data[x - 1][z] && b.data[z][y - 1])
+                return true;
         }
-    }
 
-    return composeResult;
+        return false;
+    });
 }
 BoolMatrixRelation BoolMatrixRelation::pow(int p)
 {
