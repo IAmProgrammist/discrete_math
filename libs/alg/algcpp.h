@@ -105,13 +105,13 @@ public:
 
     bool isEmpty();
 
-    bool isReflexive();
-    bool isAntiReflexive();
-    bool isSymmetric();
-    bool isAntiSymmetric();
-    bool isTransitive();
-    bool isAntiTransitive();
-    bool isFull();
+    bool isReflexive(std::pair<int, int> &failed);
+    bool isAntiReflexive(std::pair<int, int> &failed);
+    bool isSymmetric(std::pair<int, int> &failed);
+    bool isAntiSymmetric(std::pair<int, int> &failed);
+    bool isTransitive(std::pair<int, int> &failed);
+    bool isAntiTransitive(std::pair<int, int> &failed);
+    bool isFull(std::pair<int, int> &failed);
     bool isTolerant();
     bool isEquivalent();
     bool isOrdered();

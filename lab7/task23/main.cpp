@@ -13,22 +13,56 @@ bool predC(int x, int y) {
 }
 
 void outputProperties(std::string name, BoolMatrixRelation a) {
+    std::pair<int, int> failedAt;
     std::cout << "Properties for " << name << "\n";
-    std::cout << "Is reflexive? " << a.isReflexive() << "\n";
-    std::cout << "Is antireflexive? " << a.isAntiReflexive() << "\n";
-    std::cout << "Is symmetric? " << a.isSymmetric() << "\n";
-    std::cout << "Is antisymmetric? " << a.isAntiSymmetric() << "\n";
-    std::cout << "Is transitive? " << a.isTransitive() << "\n";
-    std::cout << "Is antitransitive? " << a.isAntiTransitive() << "\n";
-    std::cout << "Is full? " << a.isFull() << "\n";
-    std::cout << "Is tolerant? " << a.isTolerant() << "\n";
-    std::cout << "Is equivalent? " << a.isEquivalent() << "\n";
-    std::cout << "Is ordered? " << a.isOrdered() << "\n";
-    std::cout << "Is ordered non strict? " << a.isOrderedNonStrict() << "\n";
-    std::cout << "Is ordered strict? " << a.isOrderedStrict() << "\n";
-    std::cout << "Is ordered linear? " << a.isOrderedLinear() << "\n";
-    std::cout << "Is ordered linear non strict? " << a.isOrderedLinearNonStrict() << "\n";
-    std::cout << "Is ordered linear strict? " << a.isOrderedLinearStrict() << "\n" << std::endl;
+    if (a.isReflexive(failedAt)) {
+        std::cout << "Reflexive\n";
+    } else {
+        std::cout << "Non reflexive, failed pair: (" << failedAt.first << ", " << failedAt.second << ")\n";
+    }
+    if (a.isAntiReflexive(failedAt)) {
+        std::cout << "Antireflexive\n";
+    } else {
+        std::cout << "Non antireflexive, failed pair: (" << failedAt.first << ", " << failedAt.second << ")\n";
+    }
+    
+    if (a.isSymmetric(failedAt)) {
+        std::cout << "Symmetric\n";
+    } else {
+        std::cout << "Non symmetric, failed pair: (" << failedAt.first << ", " << failedAt.second << ")\n";
+    }
+    
+    if (a.isAntiSymmetric(failedAt)) {
+        std::cout << "AntiSymmetric\n";
+    } else {
+        std::cout << "Non antisymmetric, failed pair: (" << failedAt.first << ", " << failedAt.second << ")\n";
+    }
+    
+    if (a.isTransitive(failedAt)) {
+        std::cout << "Transitive\n";
+    } else {
+        std::cout << "Non transitive, failed pair: (" << failedAt.first << ", " << failedAt.second << ")\n";
+    }
+    
+    if (a.isAntiTransitive(failedAt)) {
+        std::cout << "AntiTransitive\n";
+    } else {
+        std::cout << "Non antitransitive, failed pair: (" << failedAt.first << ", " << failedAt.second << ")\n";
+    }
+    
+    if (a.isFull(failedAt)) {
+        std::cout << "Full\n";
+    } else {
+        std::cout << "Non full, failed pair: (" << failedAt.first << ", " << failedAt.second << ")\n";
+    }
+    std::cout << (a.isTolerant() ? "Tolerant" : "Non tolerant") << "\n";
+    std::cout << (a.isEquivalent() ? "Equivalent" : "Non equivalent") << "\n";
+    std::cout << (a.isOrdered() ? "Ordered" : "Non ordered") << "\n";
+    std::cout << (a.isOrderedNonStrict() ? "Ordered non strict" : "Non ordered non strict") << "\n";
+    std::cout << (a.isOrderedStrict() ? "Ordered strict" : "Non ordered strict") << "\n";
+    std::cout << (a.isOrderedLinear() ? "Ordered linear" : "Non ordered linear") << "\n";
+    std::cout << (a.isOrderedLinearNonStrict() ? "Ordered linear non strict" : "Non ordered linear non strict") << "\n";
+    std::cout << (a.isOrderedLinearStrict() ? "Ordered linear strict" : "Non ordered linear strict") << "\n" << std::endl;
 }
 
 int main() {
