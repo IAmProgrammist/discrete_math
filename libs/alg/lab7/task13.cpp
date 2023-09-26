@@ -1,5 +1,7 @@
 #include "../alg.h"
 
+#include <functional>
+
 BoolMatrixRelation::BoolMatrixRelation(const int size, std::function<bool (int, int)> pred)
 {
     this->size = size;

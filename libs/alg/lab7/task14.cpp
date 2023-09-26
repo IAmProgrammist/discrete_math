@@ -1,5 +1,7 @@
 #include "../alg.h"
 
+#include <functional>
+
 bool BoolMatrixRelation::includes(BoolMatrixRelation b)
 {
     if (this->size != b.size) return false;
