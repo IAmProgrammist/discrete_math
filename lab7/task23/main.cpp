@@ -1,5 +1,7 @@
 #include "../../libs/alg/alg.h"
 
+#include <stdint.h>
+
 bool predA(int x, int y) {
     return (x < y && y < (9 - x)) || ((9 - x) < y && y < x);
 }
