@@ -78,13 +78,15 @@ private:
     std::vector<std::vector<bool>> data;
     int size;
 
-    static BoolMatrixRelation getDefault() {
+    static BoolMatrixRelation getDefault()
+    {
         return BoolMatrixRelation();
     }
 
 public:
-    BoolMatrixRelation(const int size, std::function<bool (int, int)> pred);
-    BoolMatrixRelation() {
+    BoolMatrixRelation(const int size, std::function<bool(int, int)> pred);
+    BoolMatrixRelation()
+    {
         this->size = 0;
     }
     ~BoolMatrixRelation();
@@ -103,6 +105,7 @@ public:
 
     static BoolMatrixRelation getIdentity(int size);
     static BoolMatrixRelation getUniversum(int size);
+    static BoolMatrixRelation getRandom(int size, int pairs);
 
     bool isEmpty();
 
@@ -122,16 +125,24 @@ public:
     bool isOrderedLinearNonStrict();
     bool isOrderedLinearStrict();
 
-    friend std::ostream& operator<<(std::ostream& out, BoolMatrixRelation &val) {
-        out << std::setw(3) << "" << " ";
-        for (int i = 1; i <= val.size; i++) {
+    BoolMatrixRelation transitiveClosurePowV1(int *steps = NULL);
+    BoolMatrixRelation transitiveClosureWarshall(int *steps = NULL);
+
+    friend std::ostream &operator<<(std::ostream &out, BoolMatrixRelation &val)
+    {
+        out << std::setw(3) << ""
+            << " ";
+        for (int i = 1; i <= val.size; i++)
+        {
             out << std::setw(3) << i << " ";
         }
         out << "\n";
 
-        for (int x = 0; x < val.size; x++) {
+        for (int x = 0; x < val.size; x++)
+        {
             out << std::setw(3) << x + 1 << " ";
-            for (int y = 0; y < val.size; y++) {
+            for (int y = 0; y < val.size; y++)
+            {
                 out << std::setw(3) << val.data[x][y] << " ";
             }
 
