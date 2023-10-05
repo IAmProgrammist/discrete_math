@@ -9,7 +9,7 @@ SET (lab6funcs ./lab6/task6.cpp)
 
 SET (lab7funcs ./lab7/task13.cpp ./lab7/task14.cpp ./lab7/task23.cpp)
 
-SET (lab8funcs ./lab8/task1.cpp)
+SET (lab8funcs ./lab8/task1.cpp ./lab8/task2.cpp)
 
 SET(lesson060923 ./lesson060923/task1.c)
 

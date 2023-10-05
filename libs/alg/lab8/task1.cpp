@@ -1,6 +1,6 @@
 #include "../alg.h"
 
-BoolMatrixRelation BoolMatrixRelation::transitiveClosurePowV1(int *steps = NULL)
+BoolMatrixRelation BoolMatrixRelation::transitiveClosurePowUnite(int *steps)
 {
     BoolMatrixRelation ctran = *this;
     BoolMatrixRelation c2 = ctran.pow(2);
@@ -15,7 +15,7 @@ BoolMatrixRelation BoolMatrixRelation::transitiveClosurePowV1(int *steps = NULL)
     return ctran;
 }
 
-BoolMatrixRelation BoolMatrixRelation::transitiveClosureWarshall(int *steps = NULL)
+BoolMatrixRelation BoolMatrixRelation::transitiveClosureWarshall(int *steps)
 {
     BoolMatrixRelation res(size, [this](int x, int y)
                            { return data[x - 1][y - 1]; });
@@ -32,4 +32,6 @@ BoolMatrixRelation BoolMatrixRelation::transitiveClosureWarshall(int *steps = NU
             }
         }
     }
+
+    return res;
 }
