@@ -93,5 +93,6 @@ add_executable(lab7_task23 lab7/task23/main.cpp)
 target_link_libraries(lab7_task23 alg)
 
 add_executable(lab8_task3 lab8/task3/main.cpp)
+target_link_libraries(lab8_task3 alg)
 
 # Zero library

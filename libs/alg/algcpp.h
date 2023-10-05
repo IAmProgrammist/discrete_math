@@ -125,8 +125,8 @@ public:
     bool isOrderedLinearNonStrict();
     bool isOrderedLinearStrict();
 
-    BoolMatrixRelation transitiveClosurePowUnite(int *steps = NULL);
-    BoolMatrixRelation transitiveClosureWarshall(int *steps = NULL);
+    BoolMatrixRelation transitiveClosurePowUnite(unsigned long long *steps = NULL);
+    BoolMatrixRelation transitiveClosureWarshall(unsigned long long *steps = NULL);
 
     friend std::ostream &operator<<(std::ostream &out, BoolMatrixRelation &val)
     {
