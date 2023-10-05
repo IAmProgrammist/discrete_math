@@ -48,8 +48,8 @@ bool BoolMatrixRelation::isAntiReflexive(std::pair<int, int> &failed)
 bool BoolMatrixRelation::isSymmetric(std::pair<int, int> &failed)
 {
     for (int i = 0; i < size; i++) {
-        for (int j = i + 1; j < size; j++) {
-            if (data[i][j] != data[j][i]) {
+        for (int j = 0; j < size; j++) {
+            if (data[i][j] && !data[j][i]) {
                 failed = {i + 1, j + 1};
                 return false;
             }
@@ -61,7 +61,7 @@ bool BoolMatrixRelation::isSymmetric(std::pair<int, int> &failed)
 bool BoolMatrixRelation::isAntiSymmetric(std::pair<int, int> &failed)
 {
     for (int i = 0; i < size; i++) {
-        for (int j = i + 1; j < size; j++) {
+        for (int j = 0; j < size; j++) {
             if (data[i][j] && data[j][i]) {
                 failed = {i + 1, j + 1};
                 return false;
@@ -73,7 +73,6 @@ bool BoolMatrixRelation::isAntiSymmetric(std::pair<int, int> &failed)
 }
 bool BoolMatrixRelation::isTransitive(std::pair<int, int> &failed)
 {
-    //return ((*this).pow(2)).includes((*this));
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             for (int z = 0; z < size; z++) {
@@ -105,8 +104,8 @@ bool BoolMatrixRelation::isAntiTransitive(std::pair<int, int> &failed)
 bool BoolMatrixRelation::isFull(std::pair<int, int> &failed)
 {
     for (int i = 0; i < size; i++) {
-        for (int j = i + 1; j < size; j++) {
-            if (!(data[i][j] || data[j][i])) {
+        for (int j = 0; j < size; j++) {
+            if (!((i == j) || (data[i][j] || data[j][i]))) {
                 failed = {i + 1, j + 1};
                 return false;
             }
