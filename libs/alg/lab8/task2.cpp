@@ -1,4 +1,4 @@
-#include "../algcpp.h"
+#include "../alg.h"
 
 BoolMatrixRelation BoolMatrixRelation::getRandom(int size, int pairs) {
     if (pairs >= size * size) return BoolMatrixRelation (size, [](int x, int y){return true;});

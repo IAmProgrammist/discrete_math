@@ -151,6 +151,18 @@ public:
 
         return out;
     }
+
+    std::ostream& printAsAdjMatrix(std::ostream &out) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                out << data[i][j] << ",";
+            }
+
+            out << "\n";
+        }
+
+        return out;
+    }
 };
 
 #endif // DISCRETE_MATH_ALGCPP_H
