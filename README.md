@@ -1,2 +1,1 @@
-[![Running Lab test with custom bash script](https://github.com/IAmProgrammist/discrete_math/actions/workflows/labtests.yml/badge.svg)](https://github.com/IAmProgrammist/discrete_math/actions/workflows/labtests.yml)
-# Лабораторные работы по дискретной математике
+Маленький скрипт для автоматической генерации изображений графов, совместимых с решением лабораторной 3.2 из ветки C
