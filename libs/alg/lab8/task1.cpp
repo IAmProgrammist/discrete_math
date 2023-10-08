@@ -37,6 +37,7 @@ BoolMatrixRelation BoolMatrixRelation::transitiveClosureWarshall(unsigned long l
         for (int x = 0; x < size; x++)
         {
             if (!res.data[x][z]) continue;
+            
             for (int y = 0; y < size; y++)
             {
                 if (steps != NULL)
