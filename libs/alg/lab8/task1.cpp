@@ -3,9 +3,9 @@
 BoolMatrixRelation BoolMatrixRelation::transitiveClosurePowUnite(unsigned long long *steps)
 {
     BoolMatrixRelation ctran = *this;
-    BoolMatrixRelation c2 = ctran.pow(2);
+    BoolMatrixRelation c2 = ctran;
 
-    for (int i = 2; i <= size; i++)
+    for (int i = 1; i <= size; i++)
     {
         bool shouldRun = false;
         ctran = ctran.unite(c2);
