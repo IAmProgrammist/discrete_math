@@ -17,6 +17,8 @@ std::ostream& operator<<(std::ostream& out, FactorSet& factorSet) {
         if (anyOutput) 
             out << "\b\n";
     }
+
+    return out;
 }
 
 int main() {
