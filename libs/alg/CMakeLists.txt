@@ -11,8 +11,10 @@ SET (lab7funcs ./lab7/task13.cpp ./lab7/task14.cpp ./lab7/task23.cpp)
 
 SET (lab8funcs ./lab8/task1.cpp ./lab8/task2.cpp)
 
+SET (lab9funcs ./lab9/task2.cpp)
+
 SET(lesson060923 ./lesson060923/task1.c)
 
-add_library(alg ${lab0funcs} ${lab1funcs} ${lab3funcs} ${lab6funcs} ${lab7funcs} ${lab8funcs} ${lesson060923})
+add_library(alg ${lab0funcs} ${lab1funcs} ${lab3funcs} ${lab6funcs} ${lab7funcs} ${lab8funcs} ${lab9funcs} ${lesson060923})
 
 target_link_libraries(alg m)

@@ -72,6 +72,8 @@ struct Point
 
 size_t getDecision(size_t n, Point a, size_t k);
 
+typedef std::vector<int> FactorSet;
+
 class BoolMatrixRelation
 {
 private:
@@ -127,6 +129,8 @@ public:
 
     BoolMatrixRelation transitiveClosurePowUnite(unsigned long long *steps = NULL);
     BoolMatrixRelation transitiveClosureWarshall(unsigned long long *steps = NULL);
+
+    FactorSet getPackedFactorSet();
 
     friend std::ostream &operator<<(std::ostream &out, BoolMatrixRelation &val)
     {

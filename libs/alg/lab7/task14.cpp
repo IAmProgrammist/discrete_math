@@ -4,7 +4,7 @@
 
 bool BoolMatrixRelation::includes(BoolMatrixRelation b)
 {
-    if (this->size != b.size) return false;
+    if (this->size != b.size) throw std::invalid_argument("Relations should have same size");
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
@@ -16,7 +16,7 @@ bool BoolMatrixRelation::includes(BoolMatrixRelation b)
 }
 bool BoolMatrixRelation::equals(BoolMatrixRelation b)
 {
-    if (this->size != b.size) return false;
+    if (this->size != b.size) throw std::invalid_argument("Relations should have same size");
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
@@ -32,7 +32,7 @@ bool BoolMatrixRelation::includesStrict(BoolMatrixRelation b)
 }
 BoolMatrixRelation BoolMatrixRelation::unite(BoolMatrixRelation b)
 {
-    if (this->size != b.size) return BoolMatrixRelation::getDefault();
+    if (this->size != b.size) throw std::invalid_argument("Relations should have same size");
 
     return BoolMatrixRelation(size, [this, &b](int x, int y) {
         return data[x - 1][y - 1] || b.data[x - 1][y - 1];
@@ -40,7 +40,7 @@ BoolMatrixRelation BoolMatrixRelation::unite(BoolMatrixRelation b)
 }
 BoolMatrixRelation BoolMatrixRelation::intersect(BoolMatrixRelation b)
 {
-    if (this->size != b.size) return BoolMatrixRelation::getDefault();
+    if (this->size != b.size) throw std::invalid_argument("Relations should have same size");
 
     return BoolMatrixRelation(size, [this, &b](int x, int y) {
         return data[x - 1][y - 1] && b.data[x - 1][y - 1];
@@ -48,7 +48,7 @@ BoolMatrixRelation BoolMatrixRelation::intersect(BoolMatrixRelation b)
 }
 BoolMatrixRelation BoolMatrixRelation::diff(BoolMatrixRelation b)
 {
-    if (this->size != b.size) return BoolMatrixRelation::getDefault();
+    if (this->size != b.size) throw std::invalid_argument("Relations should have same size");
 
     return BoolMatrixRelation(size, [this, &b](int x, int y) {
         return data[x - 1][y - 1] && !b.data[x - 1][y - 1];
@@ -56,7 +56,7 @@ BoolMatrixRelation BoolMatrixRelation::diff(BoolMatrixRelation b)
 }
 BoolMatrixRelation BoolMatrixRelation::symDiff(BoolMatrixRelation b)
 {
-    if (this->size != b.size) return BoolMatrixRelation::getDefault();
+    if (this->size != b.size) throw std::invalid_argument("Relations should have same size");
 
     return BoolMatrixRelation(size, [this, &b](int x, int y) {
         return data[x - 1][y - 1] ^ b.data[x - 1][y - 1];
@@ -76,7 +76,7 @@ BoolMatrixRelation BoolMatrixRelation::transpose()
 }
 BoolMatrixRelation BoolMatrixRelation::compose(BoolMatrixRelation b)
 {
-    if (this->size != b.size) return BoolMatrixRelation::getDefault();
+    if (this->size != b.size) throw std::invalid_argument("Relations should have same size");
     
     return BoolMatrixRelation(size, [this, &b](int x, int y) {
         for (int z = 0; z < size; z++) {
