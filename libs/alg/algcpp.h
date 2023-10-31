@@ -76,7 +76,7 @@ typedef std::vector<int> FactorSet;
 
 class BoolMatrixRelation
 {
-private:
+protected:
     std::vector<std::vector<bool>> data;
     int size;
 
@@ -156,9 +156,12 @@ public:
         return out;
     }
 
-    std::ostream& printAsAdjMatrix(std::ostream &out) {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+    std::ostream &printAsAdjMatrix(std::ostream &out)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
                 out << data[i][j] << ",";
             }
 
@@ -168,5 +171,36 @@ public:
         return out;
     }
 };
+
+template <typename T>
+class DominantRelation;
+
+template <typename T>
+class Relation : public BoolMatrixRelation
+{
+protected:
+    std::vector<T> origin;
+
+public:
+    Relation(std::vector<T> origin, std::function<bool(T, T)> pred) : BoolMatrixRelation(origin.size(), [&origin, &pred](int x, int y)
+                                                                                         { return pred(origin[x - 1], origin[y - 1]); })
+    {
+        this->origin = origin;
+    };
+
+    DominantRelation<T> getDominantRelation();
+};
+
+template <typename T>
+class DominantRelation : public Relation<T>
+{
+public:
+    DominantRelation(std::vector<T> origin, std::function<bool(T, T)> pred) : Relation<T>(origin, pred) {};
+
+    std::vector<std::vector<T>> getTopologicalSort();
+};
+
+#include "lab10/task2.tpp"
+#include "lab10/task3.tpp"
 
 #endif // DISCRETE_MATH_ALGCPP_H
