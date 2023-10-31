@@ -189,6 +189,38 @@ public:
     };
 
     DominantRelation<T> getDominantRelation();
+
+    friend std::ostream& operator<<(std::ostream& out, Relation<T>& val) {
+        int blockSize = 10;
+        out << std::setw(blockSize) << ""
+            << " ";
+        for (int i = 0; i < val.size; i++)
+        {
+            std::stringstream ss;
+            ss << val.origin[i];
+            std::string buf = ss.str();
+
+            out << std::setw(blockSize) << buf << " ";
+        }
+        out << "\n";
+
+        for (int x = 0; x < val.size; x++)
+        {
+            std::stringstream ss;
+            ss << val.origin[x];
+            std::string buf = ss.str();
+
+            out << std::setw(blockSize) << buf << " ";
+            for (int y = 0; y < val.size; y++)
+            {
+                out << std::setw(blockSize) << val.data[x][y] << " ";
+            }
+
+            out << "\n";
+        }
+
+        return out;
+    }
 };
 
 template <typename T>
