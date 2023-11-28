@@ -117,4 +117,7 @@ target_link_libraries(lab11_task5 alg)
 add_executable(lab11_task6 lab11/task6/main.cpp) 
 target_link_libraries(lab11_task6 alg)
 
+add_executable(lab11_task7 lab11/task7/main.cpp) 
+target_link_libraries(lab11_task7 alg)
+
 # Zero library

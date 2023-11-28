@@ -32,6 +32,8 @@ public:
     virtual int countAllRoutesBetweenAllNodes(int steps) = 0;
 
     virtual std::vector<PointRoute<N*>> getAllRoutesBetweenTwoNodes(N* start, N* end, int steps) = 0;
+
+    virtual std::vector<PointRoute<N*>> getAllSimpleMaximumChains(N* start) = 0;
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -304,7 +306,37 @@ public:
         return result;
     }
 
+    std::vector<PointRoute<N*>> getAllSimpleMaximumChains(N* start) {
+        return getAllSimpleMaximumChains(start, {});
+    }
+
 private:
+    std::vector<PointRoute<N*>> getAllSimpleMaximumChains(N* start, std::vector<N*> takenNodes) {
+        std::vector<PointRoute<N*>> result;
+        takenNodes.push_back(start);
+
+        bool anyElementFound = false;
+        for (auto &adjNode : getAdjacentNodes(start)) {
+            if (std::find(takenNodes.begin(), takenNodes.end(), adjNode) != takenNodes.end()) continue;
+ 
+            anyElementFound = true;
+            auto adjacentNodesForCurrentNode = getAdjacentNodes(adjNode);
+            
+            auto routes = getAllSimpleMaximumChains(adjNode, takenNodes);
+            for (auto &route : routes) {
+                route.route.insert(route.route.begin(), start);
+
+                result.push_back(route);
+            }
+        }
+
+        if (!anyElementFound) {
+            result.push_back(PointRoute<N*>({start}));
+        }
+
+        return result;
+    }
+
     void deleteEdge(E edge, bool nonDirectionalDelete) {
         reinterpretNodes(edge.nodes);
 
