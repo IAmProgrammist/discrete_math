@@ -3,6 +3,7 @@
 
 #include "node.tpp"
 #include "edge.tpp"
+#include "routes.tpp"
 
 #include <set>
 
@@ -24,6 +25,13 @@ public:
     virtual bool isSimpleChain(std::vector<N*> simpleChain) = 0;
     virtual bool isCycle(std::vector<N*> cycle) = 0;
     virtual bool isSimpleCycle(std::vector<N*> simpleCycle) = 0;
+
+    virtual const std::vector<N*> getAdjacentNodes(N* node) = 0;
+    virtual std::vector<PointRoute<N*>> getAllRoutes(N* start, int steps) = 0;
+
+    virtual int countAllRoutesBetweenAllNodes(int steps) = 0;
+
+    virtual std::vector<PointRoute<N*>> getAllRoutesBetweenTwoNodes(N* start, N* end, int steps) = 0;
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -221,6 +229,81 @@ public:
             delete node;
         }
     }
+
+    const std::vector<N*> getAdjacentNodes(N* node) {
+        int nodeIndex = -1;
+        for (int i = 0; i < this->nodes.size(); i++) {
+            if ((*(this->nodes[i])).equals(*node)) { 
+                nodeIndex = i;
+            
+                break;
+            }
+        }
+
+        if (nodeIndex == -1) throw std::invalid_argument("Node does not belongs to graph");
+
+        std::vector<N*> result;
+        for (int i = 0; i < this->nodes.size(); i++) {
+            if (this->edges[nodeIndex][i] != nullptr)
+                result.push_back(this->nodes[i]);
+        }
+
+        return result;
+    }
+
+    std::vector<PointRoute<N*>> getAllRoutes(N* start, int steps) {
+        std::vector<PointRoute<N*>> result;
+        if (steps <= 1) {
+            result.push_back(PointRoute<N*>({start}));
+            return result;
+        }
+
+        for (auto &adjNode : getAdjacentNodes(start)) {
+            auto routes = getAllRoutes(adjNode, steps - 1);
+            for (auto &route : routes) {
+                route.route.insert(route.route.begin(), start);
+
+                result.push_back(route);
+            }
+        }
+
+        return result;
+    }
+
+    int countAllRoutesBetweenAllNodes(int steps) {
+        int count = 0;
+        for (int i = 0; i < nodes.size(); i++) {
+            for (int j = 0; j < nodes.size(); j++) {
+                count += getAllRoutesBetweenTwoNodes(this->nodes[i], this->nodes[j], steps).size();
+            }
+        }
+
+        return count;
+    }
+
+    std::vector<PointRoute<N*>> getAllRoutesBetweenTwoNodes(N* start, N* end, int steps) {
+        std::vector<PointRoute<N*>> result;
+        if (steps < 1) {
+            if (start->equals(*end))
+                result.push_back(PointRoute<N*>({start}));
+            
+            return result;
+        }
+
+        for (auto &adjNode : getAdjacentNodes(start)) {
+            auto routes = getAllRoutesBetweenTwoNodes(adjNode, end, steps - 1);
+            if (routes.size() == 0) continue;
+            
+            for (auto &route : routes) {
+                route.route.insert(route.route.begin(), start);
+
+                result.push_back(route);
+            }
+        }
+
+        return result;
+    }
+
 private:
     void deleteEdge(E edge, bool nonDirectionalDelete) {
         reinterpretNodes(edge.nodes);
@@ -271,7 +354,7 @@ private:
     }
 
     std::vector<EdgeContainer>*& at(N* from, N* to) {
-        if (from == nullptr || to == nullptr) throw std::invalid_argument("Node is not present");
+        if (from == nullptr || to == nullptr) throw std::invalid_argument("Node does not belongs to graph");
 
         int fromIndex = -1;
         int toIndex = -1;
