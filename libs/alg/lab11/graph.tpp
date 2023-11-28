@@ -4,6 +4,8 @@
 #include "node.tpp"
 #include "edge.tpp"
 
+#include <set>
+
 // Абстрактный класс граф, содержит виртуальные методы
 template <typename E, typename N = typename E::NodeType>
 class Graph {
@@ -18,19 +20,36 @@ public:
     virtual void deleteNode(const N& node) = 0;
 
     virtual bool isRoute(std::vector<N*> route) = 0;
-    //virtual bool isChain(std::vector<N*> chain);
-    //virtual bool isSimpleChain(std::vector<N*> simpleChain);
-    //virtual bool isCycle(std::vector<N*> cycle);
-    //virtual bool isSimpleCycle(std::vector<N*> simpleCycle);
+    virtual bool isChain(std::vector<N*> chain) = 0;
+    virtual bool isSimpleChain(std::vector<N*> simpleChain) = 0;
+    virtual bool isCycle(std::vector<N*> cycle) = 0;
+    virtual bool isSimpleCycle(std::vector<N*> simpleCycle) = 0;
 };
 
 template <typename E, typename N = typename E::NodeType>
 class AdjacencyMatrixGraph : public Graph<E, N> {
 public:
+    class EdgeContainer {
+        public:
+        E current;
+        EdgeContainer* linked = nullptr;
+
+        EdgeContainer(E curr) : current(curr) {};
+
+        EdgeContainer(E current, EdgeContainer* linked) {
+            this->current = current;
+            this->linked = linked;
+        }
+
+        bool operator==(const EdgeContainer& b) {
+            return current.equals(b.current) && this->linked == b.linked;
+        }
+    };
+
     using NodeValueType = typename N::NodeValueType;
 
     std::vector<N*> nodes;
-    std::vector<std::vector<std::vector<E>*>> edges;
+    std::vector<std::vector<std::vector<EdgeContainer>*>> edges;
 
     void addNode(N& node) override {
         for (auto &pNode : nodes) 
@@ -44,11 +63,30 @@ public:
             edges[i][edges[i].size() - 1] = nullptr;
         }
 
-        edges.push_back(std::vector<std::vector<E>*>(edges.size() + 1, nullptr));
+        edges.push_back(std::vector<std::vector<EdgeContainer>*>(edges.size() + 1, nullptr));
     }
 
     void addEdge(E edge) {
-        addEdge(edge, false);
+        reinterpretNodes(edge.nodes);
+
+        std::vector<EdgeContainer>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
+        if (!edgePos) edgePos = new std::vector<EdgeContainer>();
+
+        (*edgePos).push_back(EdgeContainer(edge));
+        EdgeContainer* added = &(*edgePos).back();
+        if (!edge.isDirected) {
+            std::reverse(edge.nodes.begin(), edge.nodes.end());
+
+            std::vector<EdgeContainer>*& revEdgePos = this->at(edge.nodes.front(), edge.nodes.back());
+            if (!revEdgePos) revEdgePos = new std::vector<EdgeContainer>();
+
+            (*revEdgePos).push_back(EdgeContainer(edge));
+
+            EdgeContainer* nonDirectAdded = &(*revEdgePos).back();
+
+            added->linked = nonDirectAdded;
+            nonDirectAdded->linked = added;
+        }
     }
 
     void deleteEdge(E edge) {
@@ -89,6 +127,73 @@ public:
         return true;
     }
 
+    bool isChain(std::vector<N*> chain) {
+        if (!isRoute(chain)) return false;
+        reinterpretNodes(chain);
+        
+        std::vector<EdgeContainer> visitedEdges;
+        for (int i = 0; i < chain.size() - 1; i++) {
+            auto edges = *findByBeginEndPoint((*chain[i]).getValue(), (*chain[i + 1]).getValue());
+
+            // Отдаём приоритет направленным рёбрам
+            // Можем обратиться к 0 элементу безопасно из-за проверки на маршрут выше.
+            EdgeContainer searchEdge = edges[0];
+            bool found = false;
+            bool foundDirected = false;
+            for (int j = 0; j < edges.size(); j++) {
+                if (edges[j].linked == nullptr && std::find(visitedEdges.begin(), visitedEdges.end(), edges[j]) == visitedEdges.end()) {
+                    foundDirected = true;
+                    found = true;
+                    visitedEdges.push_back(edges[j]);
+                    break;
+                } else if (edges[j].linked != nullptr && std::find(visitedEdges.begin(), visitedEdges.end(), edges[j]) == visitedEdges.end()) {
+                    found = true;
+                    searchEdge = edges[j];
+                }
+            }
+            
+            if (!found) 
+                return false;
+            else if (found && !foundDirected) {
+                visitedEdges.push_back(searchEdge);
+                visitedEdges.push_back(*searchEdge.linked);
+            } 
+        }
+
+        return true;
+    }
+
+    bool isSimpleChain(std::vector<N*> simpleChain) {
+        // Проверяем, что рёбра не повторяются
+        if (!isRoute(simpleChain)) return false;
+
+        for (int i = 0; i < simpleChain.size() - 1; i++) {
+            for (int j = i + 1; j < simpleChain.size(); j++) {
+                if ((simpleChain[i])->equals(*(simpleChain[j]))) return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool isCycle(std::vector<N*> cycle) {
+        if (!isChain(cycle)) return false;
+
+        return (*(cycle.front())).equals(*(cycle.back()));
+    }
+
+    bool isSimpleCycle(std::vector<N*> cycle) {
+        if (!isCycle(cycle)) return false;
+
+        for (int i = 0; i < cycle.size() - 2; i++) {
+            for (int j = i + 1; j < cycle.size() - 1; j++) {
+                if ((cycle[i])->equals(*(cycle[j]))) return false;
+            }
+        }
+
+        return true;
+    }
+
     // Ищет среди вершин нужную с value. Если вершина не найдена - возвращает null. Иначе - возвращает ссылку на него. 
     N* operator[](const NodeValueType value) {
         for (auto &n : this->nodes) 
@@ -99,7 +204,7 @@ public:
     }
 
     // Ищет и возвращает указатель на массив, все грани в котором начинаются с точки с значением a и заканчивается b
-    const std::vector<E>* findByBeginEndPoint(const NodeValueType begin, const NodeValueType end) {
+    const std::vector<EdgeContainer>* findByBeginEndPoint(const NodeValueType begin, const NodeValueType end) {
         return at((*this)[begin], (*this)[end]);
     }
 
@@ -120,66 +225,29 @@ private:
     void deleteEdge(E edge, bool nonDirectionalDelete) {
         reinterpretNodes(edge.nodes);
 
-        std::vector<E>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
+        std::vector<EdgeContainer>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
         if (!edgePos) throw std::invalid_argument("Edge doesn't exist in graph");
         
         
         for (int i = 0; i < (*edgePos).size(); i++) {
-            E& currentEdge = (*edgePos)[i];
+            EdgeContainer& currentEdge = (*edgePos)[i];
 
-            if (!currentEdge.equals(edge)) continue;
+            if (!currentEdge.current.equals(edge)) continue;
 
-            for (auto &name : edge.names) {
-                auto namePos = std::find(currentEdge.names.begin(), currentEdge.names.end(), name);
-                if (namePos == currentEdge.names.end()) throw std::invalid_argument("Edge doesn't exist in graph");
-
-                currentEdge.names.erase(namePos);
+            if (!edge.isDirected && !nonDirectionalDelete) {
+                deleteEdge(currentEdge.linked->current, true);
             }
 
-            if (currentEdge.names.size() == 0) (*edgePos).erase((*edgePos).begin() + i);
+            (*edgePos).erase((*edgePos).begin() + i);
             if ((*edgePos).size() == 0) {
                 delete edgePos;
                 edgePos = nullptr;
-            }
-
-            if (!nonDirectionalDelete && !edge.isDirected) {
-                std::reverse(edge.nodes.begin(), edge.nodes.end());
-                deleteEdge(edge, true);
             }
 
             return;
         }
 
         throw std::invalid_argument("Edge doesn't exist in graph");
-    }
-
-    void addEdge(E edge, bool nonDirectionalAdd) {
-        reinterpretNodes(edge.nodes);
-
-        std::vector<E>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
-        if (!edgePos) edgePos = new std::vector<E>();
-
-        for (auto& graphEdge : *edgePos)
-            // Два случая - либо мы нашли Edge, тогда просто добавляем ему новое имя...
-            if (graphEdge.equals(edge)) {
-                for (auto &name : edge.names) 
-                    graphEdge.addName(name);
-
-                if (!nonDirectionalAdd && !edge.isDirected) {
-                    std::reverse(edge.nodes.begin(), edge.nodes.end());
-                    addEdge(edge, true);
-                }
-
-                return;
-            }
-
-        // Либо добавляем Edge в массив
-        (*edgePos).push_back(edge);
-
-        if (!nonDirectionalAdd && !edge.isDirected) {
-            std::reverse(edge.nodes.begin(), edge.nodes.end());
-            addEdge(edge, true);
-        }
     }
 
     bool isNodesAdjacent(const N& a, const N& b) {
@@ -202,7 +270,7 @@ private:
         }
     }
 
-    std::vector<E>*& at(N* from, N* to) {
+    std::vector<EdgeContainer>*& at(N* from, N* to) {
         if (from == nullptr || to == nullptr) throw std::invalid_argument("Node is not present");
 
         int fromIndex = -1;
