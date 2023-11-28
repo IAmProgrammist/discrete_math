@@ -16,6 +16,12 @@ public:
     virtual N* operator[](const NodeValueType value) = 0;
     virtual void deleteEdge(E edge) = 0;
     virtual void deleteNode(const N& node) = 0;
+
+    virtual bool isRoute(std::vector<N*> route) = 0;
+    //virtual bool isChain(std::vector<N*> chain);
+    //virtual bool isSimpleChain(std::vector<N*> simpleChain);
+    //virtual bool isCycle(std::vector<N*> cycle);
+    //virtual bool isSimpleCycle(std::vector<N*> simpleCycle);
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -28,7 +34,7 @@ public:
 
     void addNode(N& node) override {
         for (auto &pNode : nodes) 
-            if (*pNode == node) 
+            if (pNode->equals(node)) 
                 throw std::invalid_argument("Node is already present");
 
         nodes.push_back(node.clone());
@@ -42,53 +48,11 @@ public:
     }
 
     void addEdge(E edge) {
-        reinterpretEdgeNodes(edge);
-
-        std::vector<E>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
-        if (!edgePos) edgePos = new std::vector<E>();
-
-        for (auto& graphEdge : *edgePos)
-            // Два случая - либо мы нашли Edge, тогда просто добавляем ему новое имя...
-            if (graphEdge.nodes == edge.nodes) {
-                for (auto &name : edge.names) 
-                    graphEdge.addName(name);
-
-                return;
-            }
-
-        // Либо добавляем Edge в массив
-        (*edgePos).push_back(edge);
+        addEdge(edge, false);
     }
 
     void deleteEdge(E edge) {
-        reinterpretEdgeNodes(edge);
-
-        std::vector<E>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
-        if (!edgePos) throw std::invalid_argument("Edge doesn't exist in graph");
-        
-        
-        for (int i = 0; i < (*edgePos).size(); i++) {
-            E& currentEdge = (*edgePos)[i];
-
-            if (currentEdge.nodes != edge.nodes) continue;
-
-            for (auto &name : edge.names) {
-                auto namePos = std::find(currentEdge.names.begin(), currentEdge.names.end(), name);
-                if (namePos == currentEdge.names.end()) throw std::invalid_argument("Edge doesn't exist in graph");
-
-                currentEdge.names.erase(namePos);
-            }
-
-            if (currentEdge.names.size() == 0) (*edgePos).erase((*edgePos).begin() + i);
-            if ((*edgePos).size() == 0) {
-                delete edgePos;
-                edgePos = nullptr;
-            }
-
-            return;
-        }
-
-        throw std::invalid_argument("Edge doesn't exist in graph");
+        deleteEdge(edge, false);
     }
 
     void deleteNode(const N& node) {
@@ -109,6 +73,20 @@ public:
             delete rowEdge[deleteIndex];
             rowEdge.erase(rowEdge.begin() + deleteIndex);
         }
+    }
+
+    bool isRoute(std::vector<N*> route) {
+        reinterpretNodes(route);
+
+        // Если две вершины смежны, то они инцидентны одному ребру.
+        // Проверкой на смежность будем сразу проверять, что вершина i
+        // инцидентна какому-то ребру, и вершина i + 1 тоже инцидентна
+        // тому же ребру.
+        for (int i = 0; i < route.size() - 1; i++) {
+            if (!isNodesAdjacent(*route[i], *route[i + 1])) return false;
+        }
+
+        return true;
     }
 
     // Ищет среди вершин нужную с value. Если вершина не найдена - возвращает null. Иначе - возвращает ссылку на него. 
@@ -139,15 +117,88 @@ public:
         }
     }
 private:
+    void deleteEdge(E edge, bool nonDirectionalDelete) {
+        reinterpretNodes(edge.nodes);
+
+        std::vector<E>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
+        if (!edgePos) throw std::invalid_argument("Edge doesn't exist in graph");
+        
+        
+        for (int i = 0; i < (*edgePos).size(); i++) {
+            E& currentEdge = (*edgePos)[i];
+
+            if (!currentEdge.equals(edge)) continue;
+
+            for (auto &name : edge.names) {
+                auto namePos = std::find(currentEdge.names.begin(), currentEdge.names.end(), name);
+                if (namePos == currentEdge.names.end()) throw std::invalid_argument("Edge doesn't exist in graph");
+
+                currentEdge.names.erase(namePos);
+            }
+
+            if (currentEdge.names.size() == 0) (*edgePos).erase((*edgePos).begin() + i);
+            if ((*edgePos).size() == 0) {
+                delete edgePos;
+                edgePos = nullptr;
+            }
+
+            if (!nonDirectionalDelete && !edge.isDirected) {
+                std::reverse(edge.nodes.begin(), edge.nodes.end());
+                deleteEdge(edge, true);
+            }
+
+            return;
+        }
+
+        throw std::invalid_argument("Edge doesn't exist in graph");
+    }
+
+    void addEdge(E edge, bool nonDirectionalAdd) {
+        reinterpretNodes(edge.nodes);
+
+        std::vector<E>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
+        if (!edgePos) edgePos = new std::vector<E>();
+
+        for (auto& graphEdge : *edgePos)
+            // Два случая - либо мы нашли Edge, тогда просто добавляем ему новое имя...
+            if (graphEdge.equals(edge)) {
+                for (auto &name : edge.names) 
+                    graphEdge.addName(name);
+
+                if (!nonDirectionalAdd && !edge.isDirected) {
+                    std::reverse(edge.nodes.begin(), edge.nodes.end());
+                    addEdge(edge, true);
+                }
+
+                return;
+            }
+
+        // Либо добавляем Edge в массив
+        (*edgePos).push_back(edge);
+
+        if (!nonDirectionalAdd && !edge.isDirected) {
+            std::reverse(edge.nodes.begin(), edge.nodes.end());
+            addEdge(edge, true);
+        }
+    }
+
+    bool isNodesAdjacent(const N& a, const N& b) {
+        try {
+            return findByBeginEndPoint(a.getValue(), b.getValue()) != nullptr;
+        } catch (std::invalid_argument& ignore) {}
+
+        return false;
+    }
+
     // Обновляет вершины в edge, делая так, чтобы они принадлежали graph. Выбрасывает ошибку, если вершины не существует.
-    void reinterpretEdgeNodes(E& edge) {
-        for (int i = 0; i < edge.nodes.size(); i++) {
-            auto pNode = this->operator[](edge.nodes[i]->getValue());
+    void reinterpretNodes(std::vector<N*>& nodes) {
+        for (int i = 0; i < nodes.size(); i++) {
+            auto pNode = this->operator[](nodes[i]->getValue());
 
             if (pNode == nullptr)
                 throw std::invalid_argument("Node does not belongs to graph");
 
-            edge.nodes[i] = pNode;
+            nodes[i] = pNode;
         }
     }
 

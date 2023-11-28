@@ -16,11 +16,11 @@ public:
         this->name  = name;
     };
 
-    virtual NamedNode<T, V>* clone() {
+    NamedNode<T, V>* clone() {
         return new NamedNode<T, V>(value, name);
     }
 
-    bool operator==(const NamedNode<T, V>& b) const {
+    virtual bool equals(const NamedNode<T, V>& b) const {
         return this->value == b.value;
     }
 
@@ -34,7 +34,7 @@ class Node : public NamedNode<T, T> {
 public:
     Node(T value) : NamedNode<T, T>(value, value) {};
 
-    NamedNode<T, T>* clone() {
+    Node<T>* clone() {
         return new Node<T>(this->value);
     }
 };
