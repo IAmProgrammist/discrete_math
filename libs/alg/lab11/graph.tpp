@@ -1,6 +1,8 @@
 #ifndef GRAPH
 #define GRAPH
 
+// Abandon hope, all ye who enter here
+
 #include "node.tpp"
 #include "edge.tpp"
 #include "routes.tpp"
@@ -274,11 +276,10 @@ public:
 
     int countAllRoutesBetweenAllNodes(int steps) {
         int count = 0;
-        for (int i = 0; i < nodes.size(); i++) {
-            for (int j = 0; j < nodes.size(); j++) {
-                count += getAllRoutesBetweenTwoNodes(this->nodes[i], this->nodes[j], steps).size();
-            }
-        }
+        for (int i = 0; i < nodes.size(); i++)
+            for (int j = 0; j < nodes.size(); j++) 
+                count += countAllRoutesBetweenTwoNodes(i, j, steps);
+
 
         return count;
     }
@@ -311,6 +312,19 @@ public:
     }
 
 private:
+    int countAllRoutesBetweenTwoNodes(int start, int end, int steps) {
+        if (steps <= 1) {
+            return edges[start][end] != nullptr;
+        }
+
+        int count = 0;
+        for (int i = 0; i < edges.size(); i++) {
+            count += countAllRoutesBetweenTwoNodes(start, i, steps - 1) * (edges[i][end] != nullptr);
+        }
+
+        return count;
+    }
+
     std::vector<PointRoute<N*>> getAllSimpleMaximumChains(N* start, std::vector<N*> takenNodes) {
         std::vector<PointRoute<N*>> result;
         takenNodes.push_back(start);
