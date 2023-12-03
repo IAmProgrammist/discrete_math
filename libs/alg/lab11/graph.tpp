@@ -46,6 +46,8 @@ public:
         E current;
         EdgeContainer* linked = nullptr;
 
+        EdgeContainer(){};
+
         EdgeContainer(E curr) : current(curr) {};
 
         EdgeContainer(E current, EdgeContainer* linked) {
@@ -140,16 +142,17 @@ public:
     }
 
     bool isChain(std::vector<N*> chain) {
-        if (!isRoute(chain)) return false;
         reinterpretNodes(chain);
         
         std::vector<EdgeContainer> visitedEdges;
         for (int i = 0; i < chain.size() - 1; i++) {
-            auto edges = *findByBeginEndPoint((*chain[i]).getValue(), (*chain[i + 1]).getValue());
+            auto pedges = findByBeginEndPoint((*chain[i]).getValue(), (*chain[i + 1]).getValue());
+            if (pedges == nullptr) return false;
+            auto edges = *pedges;
 
             // Отдаём приоритет направленным рёбрам
             // Можем обратиться к 0 элементу безопасно из-за проверки на маршрут выше.
-            EdgeContainer searchEdge = edges[0];
+            EdgeContainer searchEdge;
             bool found = false;
             bool foundDirected = false;
             for (int j = 0; j < edges.size(); j++) {
@@ -257,7 +260,7 @@ public:
 
     std::vector<PointRoute<N*>> getAllRoutes(N* start, int steps) {
         std::vector<PointRoute<N*>> result;
-        if (steps <= 1) {
+        if (steps < 1) {
             result.push_back(PointRoute<N*>({start}));
             return result;
         }
@@ -295,7 +298,6 @@ public:
 
         for (auto &adjNode : getAdjacentNodes(start)) {
             auto routes = getAllRoutesBetweenTwoNodes(adjNode, end, steps - 1);
-            if (routes.size() == 0) continue;
             
             for (auto &route : routes) {
                 route.route.insert(route.route.begin(), start);

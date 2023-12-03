@@ -11,6 +11,8 @@ public:
     V name;
     bool isDirected;
 
+    NamedEdge(){};
+
     NamedEdge(std::initializer_list<T*> nodes, V name, bool isDirected) {
         if (nodes.size() < 2) throw std::invalid_argument("You can't create edge with less than two nodes");
         this->nodes.insert(this->nodes.begin(), nodes.begin(), nodes.end());
@@ -31,6 +33,8 @@ public:
 template <typename T>
 class Edge : public NamedEdge<T, std::string> {
 public:
+    Edge(){};
+
     Edge(std::initializer_list<T*> nodes, bool isDirected) : NamedEdge<T, std::string>(nodes, "", isDirected) {};
 };
 

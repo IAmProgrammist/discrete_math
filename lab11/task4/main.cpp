@@ -4,8 +4,8 @@ int main() {
     Graph<Edge<IntNode>> *G1 = constructGraph1();
     Graph<Edge<IntNode>> *G2 = constructGraph2();
 
-    std::cout << "All routes that start in 5 in G1 that has 3 edges: \n";
-    auto r = G1->getAllRoutes((*G1)[5], 3);
+    std::cout << "All routes that start in 5 in G1 and has length of 2: \n";
+    auto r = G1->getAllRoutes((*G1)[5], 2);
 
     for (auto &route : r) {
         for (int i = 0; i < route.route.size(); i++) {
@@ -19,8 +19,8 @@ int main() {
         std::cout << std::endl;
     }
 
-    std::cout << "All routes that start in 2 in G2 that has 4 edges: \n";
-    r = G2->getAllRoutes((*G1)[2], 4);
+    std::cout << "All routes that start in 2 in G2 and has length of 3: \n";
+    r = G2->getAllRoutes((*G1)[2], 3);
 
     for (auto &route : r) {
         for (int i = 0; i < route.route.size(); i++) {
