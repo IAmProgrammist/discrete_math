@@ -237,4 +237,6 @@ public:
 
 #include "lab11/graph.tpp"
 
+#include "lab12/task1.tpp"
+
 #endif // DISCRETE_MATH_ALGCPP_H

@@ -36,6 +36,9 @@ public:
     virtual std::vector<PointRoute<N*>> getAllRoutesBetweenTwoNodes(N* start, N* end, int steps) = 0;
 
     virtual std::vector<PointRoute<N*>> getAllSimpleMaximumChains(N* start) = 0;
+
+    virtual bool isHamiltonian() = 0;
+    virtual bool isEuler() = 0;
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -310,6 +313,9 @@ public:
     std::vector<PointRoute<N*>> getAllSimpleMaximumChains(N* start) {
         return getAllSimpleMaximumChains(start, {});
     }
+
+    bool isHamiltonian();
+    bool isEuler();
 
 private:
     int countAllRoutesBetweenTwoNodes(int start, int end, int steps) {
