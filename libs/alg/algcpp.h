@@ -239,4 +239,7 @@ public:
 
 #include "lab12/task1.tpp"
 
+#include "lab13/task1.tpp"
+#include "lab13/task2.tpp"
+
 #endif // DISCRETE_MATH_ALGCPP_H

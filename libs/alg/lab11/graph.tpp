@@ -9,10 +9,18 @@
 
 #include <set>
 
-// Абстрактный класс граф, содержит виртуальные методы
 template <typename E, typename N = typename E::NodeType>
-class Graph {
+class Graph;
 
+template <typename E, typename N = typename E::NodeType>
+struct Forest {
+    Graph<E, N>* trees;
+    std::vector<N*> roots;
+};
+
+// Абстрактный класс граф, содержит виртуальные методы
+template <typename E, typename N>
+class Graph {
 public:
     using NodeValueType = typename N::NodeValueType;
 
@@ -40,8 +48,12 @@ public:
     virtual bool isHamiltonian() = 0;
     virtual bool isEuler() = 0;
 
+    virtual Forest<E, N> getSpanningForest() = 0;
+
     virtual ~Graph() {
     };
+
+    virtual Graph<E>* clone() = 0;
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -327,6 +339,8 @@ public:
 
     bool isHamiltonian();
     bool isEuler();
+    Forest<E, N> getSpanningForest();
+    Graph<E>* clone();
 
 private:
     bool hasHamiltonianCycle(int originIndex, int startIndex, std::vector<bool>& takenNodes);
