@@ -39,6 +39,9 @@ public:
 
     virtual bool isHamiltonian() = 0;
     virtual bool isEuler() = 0;
+
+    virtual ~Graph() {
+    };
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -66,7 +69,7 @@ public:
     using NodeValueType = typename N::NodeValueType;
 
     std::vector<N*> nodes;
-    std::vector<std::vector<std::vector<EdgeContainer>*>> edges;
+    std::vector<std::vector<std::vector<EdgeContainer*>*>> edges;
 
     void addNode(N& node) override {
         for (auto &pNode : nodes) 
@@ -80,26 +83,26 @@ public:
             edges[i][edges[i].size() - 1] = nullptr;
         }
 
-        edges.push_back(std::vector<std::vector<EdgeContainer>*>(edges.size() + 1, nullptr));
+        edges.push_back(std::vector<std::vector<EdgeContainer*>*>(edges.size() + 1, nullptr));
     }
 
     void addEdge(E edge) {
         reinterpretNodes(edge.nodes);
 
-        std::vector<EdgeContainer>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
-        if (!edgePos) edgePos = new std::vector<EdgeContainer>();
+        std::vector<EdgeContainer*>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
+        if (!edgePos) edgePos = new std::vector<EdgeContainer*>();
 
-        (*edgePos).push_back(EdgeContainer(edge));
-        EdgeContainer* added = &(*edgePos).back();
+        (*edgePos).push_back(new EdgeContainer(edge));
+        EdgeContainer* added = (*edgePos).back();
         if (!edge.isDirected) {
             std::reverse(edge.nodes.begin(), edge.nodes.end());
 
-            std::vector<EdgeContainer>*& revEdgePos = this->at(edge.nodes.front(), edge.nodes.back());
-            if (!revEdgePos) revEdgePos = new std::vector<EdgeContainer>();
+            std::vector<EdgeContainer*>*& revEdgePos = this->at(edge.nodes.front(), edge.nodes.back());
+            if (!revEdgePos) revEdgePos = new std::vector<EdgeContainer*>();
 
-            (*revEdgePos).push_back(EdgeContainer(edge));
+            (*revEdgePos).push_back(new EdgeContainer(edge));
 
-            EdgeContainer* nonDirectAdded = &(*revEdgePos).back();
+            EdgeContainer* nonDirectAdded = (*revEdgePos).back();
 
             added->linked = nonDirectAdded;
             nonDirectAdded->linked = added;
@@ -159,14 +162,14 @@ public:
             bool found = false;
             bool foundDirected = false;
             for (int j = 0; j < edges.size(); j++) {
-                if (edges[j].linked == nullptr && std::find(visitedEdges.begin(), visitedEdges.end(), edges[j]) == visitedEdges.end()) {
+                if (edges[j]->linked == nullptr && std::find(visitedEdges.begin(), visitedEdges.end(), *edges[j]) == visitedEdges.end()) {
                     foundDirected = true;
                     found = true;
-                    visitedEdges.push_back(edges[j]);
+                    visitedEdges.push_back(*edges[j]);
                     break;
-                } else if (edges[j].linked != nullptr && std::find(visitedEdges.begin(), visitedEdges.end(), edges[j]) == visitedEdges.end()) {
+                } else if (edges[j]->linked != nullptr && std::find(visitedEdges.begin(), visitedEdges.end(), *edges[j]) == visitedEdges.end()) {
                     found = true;
-                    searchEdge = edges[j];
+                    searchEdge = *edges[j];
                 }
             }
             
@@ -222,14 +225,20 @@ public:
     }
 
     // Ищет и возвращает указатель на массив, все грани в котором начинаются с точки с значением a и заканчивается b
-    const std::vector<EdgeContainer>* findByBeginEndPoint(const NodeValueType begin, const NodeValueType end) {
+    const std::vector<EdgeContainer*>* findByBeginEndPoint(const NodeValueType begin, const NodeValueType end) {
         return at((*this)[begin], (*this)[end]);
     }
 
-    ~AdjacencyMatrixGraph() {
+    ~AdjacencyMatrixGraph() override {
         // Удаляем рёбра
         for (auto row : this->edges) {
             for (auto element : row) {
+                if (element == nullptr) continue;
+
+                for (auto& container : *element) {
+                    delete container;
+                }
+
                 delete element;
             }
         }
@@ -320,6 +329,10 @@ public:
     bool isEuler();
 
 private:
+    bool hasHamiltonianCycle(int originIndex, int startIndex, std::vector<bool>& takenNodes);
+    bool hasEulerCycle(int originIndex, int startIndex, 
+std::vector<std::vector<bool>>& visited, int visitedSize, int totalEdgesCount);
+
     int countAllRoutesBetweenTwoNodes(int start, int end, int steps) {
         if (steps <= 1) {
             return edges[start][end] != nullptr;
@@ -362,19 +375,20 @@ private:
     void deleteEdge(E edge, bool nonDirectionalDelete) {
         reinterpretNodes(edge.nodes);
 
-        std::vector<EdgeContainer>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
+        std::vector<EdgeContainer*>*& edgePos = this->at(edge.nodes.front(), edge.nodes.back());
         if (!edgePos) throw std::invalid_argument("Edge doesn't exist in graph");
         
         
         for (int i = 0; i < (*edgePos).size(); i++) {
-            EdgeContainer& currentEdge = (*edgePos)[i];
+            EdgeContainer*& currentEdge = (*edgePos)[i];
 
-            if (!currentEdge.current.equals(edge)) continue;
+            if (!currentEdge->current.equals(edge)) continue;
 
             if (!edge.isDirected && !nonDirectionalDelete) {
-                deleteEdge(currentEdge.linked->current, true);
+                deleteEdge(currentEdge->linked->current, true);
             }
-
+            
+            delete currentEdge;
             (*edgePos).erase((*edgePos).begin() + i);
             if ((*edgePos).size() == 0) {
                 delete edgePos;
@@ -407,7 +421,7 @@ private:
         }
     }
 
-    std::vector<EdgeContainer>*& at(N* from, N* to) {
+    std::vector<EdgeContainer*>*& at(N* from, N* to) {
         if (from == nullptr || to == nullptr) throw std::invalid_argument("Node does not belongs to graph");
 
         int fromIndex = -1;
