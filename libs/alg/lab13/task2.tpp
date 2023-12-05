@@ -1,7 +1,7 @@
 #include "../alg.h"
 
 template <typename E>
-std::vector<E> getEdgesToDeleteToDivideGraphInThreeLinkedComponents(Graph<E> *g, std::vector<E> edges) {
+std::pair<Forest<E>, std::vector<E>> getEdgesToDeleteToDivideGraphInNLinkedComponents(Graph<E> *g, std::vector<E> edges, int linkedComponentsAmount) {
     for (int deleteAmount = 0; deleteAmount <= edges.size(); deleteAmount++) {
         for (auto &comb : getCombinations<E>(edges, deleteAmount)){
             auto originClone = g->clone();
@@ -12,15 +12,12 @@ std::vector<E> getEdgesToDeleteToDivideGraphInThreeLinkedComponents(Graph<E> *g,
             auto forest = originClone->getSpanningForest();
             delete originClone;
 
-            if (forest.roots.size() == 3) {
-                delete forest.trees;
-
-                return comb;
-            }
+            if (forest.roots.size() == linkedComponentsAmount) 
+                return {forest, comb};
 
             delete forest.trees;
         }
     }
 
-    return std::vector<E>(0);
+    return {{nullptr, {}, {}}, std::vector<E>(0)};
 }

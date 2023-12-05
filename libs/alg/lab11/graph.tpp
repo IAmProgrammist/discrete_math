@@ -16,6 +16,7 @@ template <typename E, typename N = typename E::NodeType>
 struct Forest {
     Graph<E, N>* trees;
     std::vector<N*> roots;
+    std::vector<std::set<N*>> bouquets;
 };
 
 // Абстрактный класс граф, содержит виртуальные методы
@@ -54,6 +55,8 @@ public:
     };
 
     virtual Graph<E>* clone() = 0;
+    virtual bool isChainBetweenNodesExist(N* start, N* end) = 0;
+    virtual int getNodesSize() = 0;
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -337,15 +340,53 @@ public:
         return getAllSimpleMaximumChains(start, {});
     }
 
+    bool isChainBetweenNodesExist(N* start, N* end) {
+        int sIndex = -1;
+        int eIndex = -1;
+        for (int i = 0; i < this->nodes.size() && (sIndex == -1 || eIndex == -1); i++) {
+            if (this->nodes[i]->equals(*start)) sIndex = i;
+            if (this->nodes[i]->equals(*end))   eIndex = i;
+        }
+
+        if (sIndex == -1 || eIndex == -1) throw std::invalid_argument("Node does not belongs to graph");
+    
+        return isChainBetweenNodesExist(sIndex, eIndex, {});
+    }
+
     bool isHamiltonian();
     bool isEuler();
     Forest<E, N> getSpanningForest();
     Graph<E>* clone();
 
+    int getNodesSize() {
+        return this->nodes.size();
+    }
+
 private:
     bool hasHamiltonianCycle(int originIndex, int startIndex, std::vector<bool>& takenNodes);
     bool hasEulerCycle(int originIndex, int startIndex, 
 std::vector<std::vector<bool>>& visited, int visitedSize, int totalEdgesCount);
+
+    bool isChainBetweenNodesExist(int start, int end, std::set<EdgeContainer*> visitedEdges) {
+        if (start == end) return true;
+        
+        for (int i = 0; i < this->nodes.size(); i++) {
+            if (this->edges[start][i] == nullptr) continue;;
+
+            for (auto& edge : *this->edges[start][i]) {
+                if (visitedEdges.find(edge) != visitedEdges.end()) continue;
+
+                std::set<EdgeContainer*> newVisitedEdges(visitedEdges);
+                newVisitedEdges.insert(edge);
+
+                if (edge->linked != nullptr) newVisitedEdges.insert(edge->linked);
+            
+                if (isChainBetweenNodesExist(i, end, newVisitedEdges)) return true;
+            }
+        }
+
+        return false;
+    }
 
     int countAllRoutesBetweenTwoNodes(int start, int end, int steps) {
         if (steps <= 1) {

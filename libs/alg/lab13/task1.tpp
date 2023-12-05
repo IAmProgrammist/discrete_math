@@ -68,7 +68,14 @@ Forest<E, N> AdjacencyMatrixGraph<E, N>::getSpanningForest() {
         auto& bouquet = bouquets[i];
 
         if (!bouquet.empty()) {
+            std::set<N*> rBouquet;
             result.roots.push_back((*trees)[this->nodes[i]->getValue()]);
+
+            for (auto& elementIndex : bouquet) {
+                rBouquet.insert(trees->nodes[elementIndex]);
+            }
+
+            result.bouquets.push_back(rBouquet);
         }
     }
 
