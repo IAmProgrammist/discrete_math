@@ -14,8 +14,9 @@ class Graph;
 
 template <typename E, typename N = typename E::NodeType>
 struct Forest {
+    // Граф, содержащий получившийся остовый лес
     Graph<E, N>* trees;
-    std::vector<N*> roots;
+    // Букеты
     std::vector<std::set<N*>> bouquets;
 };
 

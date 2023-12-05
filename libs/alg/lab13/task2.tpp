@@ -12,12 +12,12 @@ std::pair<Forest<E>, std::vector<E>> getEdgesToDeleteToDivideGraphInNLinkedCompo
             auto forest = originClone->getSpanningForest();
             delete originClone;
 
-            if (forest.roots.size() == linkedComponentsAmount) 
+            if (forest.bouquets.size() == linkedComponentsAmount) 
                 return {forest, comb};
 
             delete forest.trees;
         }
     }
 
-    return {{nullptr, {}, {}}, std::vector<E>(0)};
+    return {{nullptr, {}}, std::vector<E>(0)};
 }

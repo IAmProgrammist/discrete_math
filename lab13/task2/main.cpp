@@ -94,7 +94,7 @@ void testFigureHome() {
     testGraph("Home", &g, edges);
 }
 
-void testFull() {
+void testFull5() {
     AdjacencyMatrixGraph<NamedEdge<Node<int>, int>> g;
 
     Node N1(1);
@@ -133,6 +133,59 @@ void testFull() {
     g.addEdge(E10);
 
     testGraph("Full with 5 nodes", &g, edges);
+}
+
+void testFull6() {
+    AdjacencyMatrixGraph<NamedEdge<Node<int>, int>> g;
+
+    Node N1(1);
+    Node N2(2);
+    Node N3(3);
+    Node N4(4);
+    Node N5(5);
+    Node N6(6);
+
+    g.addNode(N1);
+    g.addNode(N2);
+    g.addNode(N3);
+    g.addNode(N4);
+    g.addNode(N5);
+    g.addNode(N6);
+
+    NamedEdge E1({&N1, &N2}, 1, false);
+    NamedEdge E2({&N1, &N3}, 2, false);
+    NamedEdge E3({&N1, &N4}, 3, false);
+    NamedEdge E4({&N1, &N5}, 4, false);
+    NamedEdge E5({&N1, &N6}, 5, false);
+    NamedEdge E6({&N2, &N3}, 6, false);
+    NamedEdge E7({&N2, &N4}, 7, false);
+    NamedEdge E8({&N2, &N5}, 8, false);
+    NamedEdge E9({&N2, &N6}, 9, false);
+    NamedEdge E10({&N3, &N4}, 10, false);
+    NamedEdge E11({&N3, &N5}, 11, false);
+    NamedEdge E12({&N3, &N6}, 12, false);
+    NamedEdge E13({&N4, &N5}, 13, false);
+    NamedEdge E14({&N4, &N6}, 14, false);
+    NamedEdge E15({&N5, &N6}, 15, false);
+    std::vector<NamedEdge<Node<int>, int>> edges = {E1, E2, E3, E4, E5, E6, E7, E8, E9, E10, E11, E12, E13, E14, E15};
+
+    g.addEdge(E1);
+    g.addEdge(E2);
+    g.addEdge(E3);
+    g.addEdge(E4);
+    g.addEdge(E5);
+    g.addEdge(E6);
+    g.addEdge(E7);
+    g.addEdge(E8);
+    g.addEdge(E9);
+    g.addEdge(E10);
+    g.addEdge(E11);
+    g.addEdge(E12);
+    g.addEdge(E13);
+    g.addEdge(E14);
+    g.addEdge(E15);
+
+    testGraph("Full with 6 nodes", &g, edges);
 }
 
 void testThreeTriangles() {
@@ -224,11 +277,7 @@ void testThreeTrianglesStronglyLinked() {
     NamedEdge E13({&N2, &N7}, 13, false);
     NamedEdge E14({&N3, &N7}, 14, false);
     NamedEdge E15({&N3, &N6}, 15, false);
-    NamedEdge E16({&N8, &N1}, 16, false);
-    NamedEdge E17({&N5, &N9}, 17, false);
-    NamedEdge E18({&N2, &N8}, 18, false);
-    NamedEdge E19({&N4, &N9}, 19, false);
-    std::vector<NamedEdge<Node<int>, int>> edges = {E1, E2, E3, E4, E5, E6, E7, E8, E9, E10, E11, E12, E13, E14, E15, E16, E17, E18, E19};
+    std::vector<NamedEdge<Node<int>, int>> edges = {E1, E2, E3, E4, E5, E6, E7, E8, E9, E10, E11, E12, E13, E14, E15};
 
     g.addEdge(E1);
     g.addEdge(E2);
@@ -245,10 +294,6 @@ void testThreeTrianglesStronglyLinked() {
     g.addEdge(E13);
     g.addEdge(E14);
     g.addEdge(E15);
-    g.addEdge(E16);
-    g.addEdge(E17);
-    g.addEdge(E18);
-    g.addEdge(E19);
 
     testGraph("Three triangles strongly linked", &g, edges);
 }
@@ -256,7 +301,8 @@ void testThreeTrianglesStronglyLinked() {
 void test() {
     testThreeNodes();
     testFigureHome();
-    testFull();
+    testFull5();
+    testFull6();
     testThreeTriangles();
     testThreeTrianglesStronglyLinked();
 }
