@@ -15,7 +15,7 @@ struct Report {
 
 #define LOWER_N 8
 #define UPPER_N 10
-#define ELEMENTS_FOR_N 10
+#define ELEMENTS_FOR_N 20
 
 #define CORES_AMOUNT 10
 std::atomic<int> takenCores;

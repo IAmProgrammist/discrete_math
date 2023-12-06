@@ -52,7 +52,26 @@ template <typename E, typename N>
 bool AdjacencyMatrixGraph<E, N>::isEuler() {
     if (this->nodes.size() < 3) return false;
 
-    
+    // Строим матрицу M 
+    BoolMatrixRelation linkMatrix(this->nodes.size(), [this](int x, int y) {
+        return this->edges[x - 1][y - 1] != nullptr;
+    });
 
-    return false;
+    // Получаем матрицу C = I + M+ и формируем из C фактормножество
+    auto factorSet = BoolMatrixRelation::getIdentity(this->nodes.size()).unite(linkMatrix.transitiveClosureWarshall(nullptr)).getPackedFactorSet();
+    
+    // Если в полученном фактормножестве несколько классов эквивалентности, то множество несвязное.
+    for (int i = 1; i < factorSet.size(); i++) 
+        if (factorSet[0] != factorSet[i]) return false;
+
+    for (int i = 0; i < this->nodes.size(); i++) {
+        int nodePow = 0;
+        for (int j = 0; j < this->nodes.size(); j++) 
+            nodePow += (this->edges[i][j] != nullptr);
+
+        // Степень каждой вершины должна быть чётна.
+        if (nodePow % 2 != 0) return false;
+    }
+
+    return true;
 }
