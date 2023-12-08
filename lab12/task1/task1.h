@@ -15,7 +15,7 @@ Graph<Edge<IntNode>>* generateRandomGraph(int nodesCount, int edgeCount) {
 
     std::vector<std::pair<int, int>> edges;
     for (int i = 1; i <= nodesCount; i++) {
-        for (int j = 1; j <= nodesCount; j++) {
+        for (int j = i + 1; j <= nodesCount; j++) {
             if (i == j) continue;
 
             edges.push_back({i, j});
