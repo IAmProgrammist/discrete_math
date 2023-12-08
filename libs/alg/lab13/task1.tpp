@@ -31,9 +31,9 @@ Graph<E>* AdjacencyMatrixGraph<E, N>::clone() {
 template <typename E, typename N>
 Forest<E, N> AdjacencyMatrixGraph<E, N>::getSpanningForest() {
     AdjacencyMatrixGraph<E> *trees = new AdjacencyMatrixGraph<E>();
-    std::vector<std::set<int>> bouquets(this->nodes.size());
+    std::vector<int> bouquet(this->nodes.size());
     for (int i = 0; i < this->nodes.size(); i++) {
-        bouquets[i].insert(i);
+        bouquet[i] = i;
         trees->addNode(*this->nodes[i]);
     }
 
@@ -42,20 +42,16 @@ Forest<E, N> AdjacencyMatrixGraph<E, N>::getSpanningForest() {
             // Ребра между i и j нет, пропускаем.
             if (this->edges[i][j] == nullptr) continue;
 
-            int indBI = -1;
-            int indBJ = -1;
-
-            for (int bIndex = 0; bIndex < bouquets.size() && (indBI == -1 || indBJ == -1); bIndex++) {
-                if (bouquets[bIndex].find(i) != bouquets[bIndex].end()) indBI = bIndex;
-                if (bouquets[bIndex].find(j) != bouquets[bIndex].end()) indBJ = bIndex;
-            }
+            int bI = bouquet[i];
+            int bJ = bouquet[j];
 
             // Обе концевые вершины принадлежат одному букету, ребро не добавляем.
-            if (indBI == indBJ) continue;
+            if (bI == bJ) continue;
 
             // Концевые вершины принадлежат разным букетам, поэтому нужно их объединить в один.
-            bouquets[indBI].insert(bouquets[indBJ].begin(), bouquets[indBJ].end());
-            bouquets[indBJ].clear();
+            for (int k = 0; k < bouquet.size(); k++)
+                if (bouquet[k] == bI)
+                    bouquet[k] = bJ;
 
             for (auto& edge : *this->edges[i][j])
                 trees->addEdge((*edge).current);
@@ -65,17 +61,13 @@ Forest<E, N> AdjacencyMatrixGraph<E, N>::getSpanningForest() {
     Forest<E, N> result;
     result.trees = trees;
     for (int i = 0; i < this->nodes.size(); i++) {
-        auto& bouquet = bouquets[i];
+        std::set<N*> rBouquet;
+        
+        for (int j = 0; j < this->nodes.size(); j++)
+            if (bouquet[j] == i) rBouquet.insert(trees->nodes[j]);
 
-        if (!bouquet.empty()) {
-            std::set<N*> rBouquet;
-
-            for (auto& elementIndex : bouquet) {
-                rBouquet.insert(trees->nodes[elementIndex]);
-            }
-
+        if (!rBouquet.empty()) 
             result.bouquets.push_back(rBouquet);
-        }
     }
 
     return result;

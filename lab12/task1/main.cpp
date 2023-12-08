@@ -68,8 +68,12 @@ int main() {
 
         auto t = future.second.get();
 
-        std::cout << "\\hline\n";
-        std::cout << t.n << "&"<<t.edgesCount << "&" << t.eulerCount << "&" << t.hamilthonCount << "&" << t.totalCount << "\\\\\n";
+        std::cout << "====================\n";
+        std::cout << "n = " << t.n << "\n";
+        std::cout << "edges = " << t.edgesCount << "\n";
+        std::cout << "hamilthon = " << t.hamilthonCount << "\n";
+        std::cout << "euler = " << t.eulerCount << "\n";
+        std::cout << "total = " << t.totalCount << "\n\n";
     }
 
     getchar();
