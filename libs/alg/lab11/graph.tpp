@@ -8,6 +8,7 @@
 #include "routes.tpp"
 
 #include <set>
+#include <limits>
 
 template <typename E, typename N = typename E::NodeType>
 class Graph;
@@ -20,11 +21,22 @@ struct Forest {
     std::vector<std::set<N*>> bouquets;
 };
 
+template <typename N, typename V>
+struct ShortestWay {
+    std::vector<bool> reachableNodes;
+    std::vector<V> distances;
+    std::vector<int> prevNodesIndices;
+    std::vector<N> nodes;
+    int rootNodeIndex;
+    int endNodeIndex;
+};
+
 // Абстрактный класс граф, содержит виртуальные методы
 template <typename E, typename N>
 class Graph {
 public:
     using NodeValueType = typename N::NodeValueType;
+    using EdgeValueType = typename E::NameType;
 
     virtual void addNode(N& node) = 0;
     virtual void addEdge(E edge) = 0;
@@ -58,6 +70,8 @@ public:
     virtual Graph<E>* clone() = 0;
     virtual bool isChainBetweenNodesExist(N* start, N* end) = 0;
     virtual int getNodesSize() = 0;
+
+    virtual ShortestWay<N, EdgeValueType> getShortestWay(N* start, N* target) = 0;
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -82,6 +96,7 @@ public:
         }
     };
 
+    using EdgeValueType = typename E::NameType;
     using NodeValueType = typename N::NodeValueType;
 
     std::vector<N*> nodes;
@@ -361,6 +376,68 @@ public:
 
     int getNodesSize() {
         return this->nodes.size();
+    }
+
+    ShortestWay<N, EdgeValueType> getShortestWay(N* start, N* target) {
+        int root = -1;
+        int end = -1;
+        for (int i = 0; i < this->nodes.size() && (root == -1 || end == -1); i++) {
+            if (root == -1 && start->equals(*this->nodes[i])) root = i;
+            if (end == -1 && target->equals(*this->nodes[i])) end = i;
+        }
+
+        if (root == -1 || end == -1) throw std::invalid_argument("Node doesn't belong to graph");
+
+        ShortestWay<N, EdgeValueType> result;
+        result.rootNodeIndex = root;
+        result.endNodeIndex = end;
+
+        // Шаг 1
+        for (int i = 0; i < this->nodes.size(); i++) {
+            result.reachableNodes.push_back(i == root);
+            result.distances.push_back(i == root ? 0 : std::numeric_limits<EdgeValueType>::max());
+            result.prevNodesIndices.push_back(i == root ? root : -1);
+            result.nodes.push_back(*this->nodes[i]);
+        }
+
+        // Шаг 4
+        // Условие root != end было заменено, чтобы строить полное дерево кратчайших путей.
+        while (true) {
+            // Шаг 2
+            for (int i = 0; i < this->nodes.size(); i++) {
+                if (this->edges[root][i] == nullptr || result.reachableNodes[i]) continue;
+
+                for (auto& edge : *this->edges[root][i]) {
+                    EdgeValueType dist = result.distances[root] + edge->current.name;
+                    if (dist > result.distances[i]) continue;
+                
+                    result.distances[i] = dist;
+                    result.prevNodesIndices[i] = root;
+                }
+            }
+
+            // Шаг 3
+            int minLenNode = -1;
+            for (int i = 0; i < this->nodes.size(); i++) {
+                if (result.reachableNodes[i]) continue;
+
+                if (minLenNode == -1) {
+                    minLenNode = i;
+                    continue;
+                }
+
+                if (result.distances[minLenNode] > result.distances[i])
+                    minLenNode = i;
+            }
+
+            if (minLenNode == -1 || result.distances[minLenNode] == std::numeric_limits<EdgeValueType>::max()) break;
+
+            result.reachableNodes[minLenNode] = true;
+
+            root = minLenNode;
+        }  
+
+        return result;
     }
 
 private:
