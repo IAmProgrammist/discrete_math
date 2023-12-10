@@ -1,7 +1,7 @@
 #include "../../libs/alg/alg.h"
 
 template<typename N, typename EV>
-void printPath( ShortestWay<N, EV> shortestWayTree, 
+void printPath( ShortestWayTree<N, EV> shortestWayTree, 
 int index, bool isEnd) {
     if (index != shortestWayTree.rootNodeIndex)
         printPath(shortestWayTree, shortestWayTree.prevNodesIndices[index], false);
@@ -147,7 +147,7 @@ bool testTree4(std::string graphName) {
     g.addEdge({{&N1, &N4}, 4, true});
     g.addEdge({{&N7, &N3}, 4, true});
 
-    return analyzeTree(&N1, &N6, g, graphName);
+    return analyzeTree(&N7, &N3, g, graphName);
 }
 
 bool testTree5(std::string graphName) {
@@ -204,12 +204,12 @@ bool testTree6(std::string graphName) {
 }
 
 void test() {
-    assert(testTree1("Tree 1"));
-    assert(!testTree2("Tree 2"));
-    assert(testTree3("Tree 3"));
-    assert(testTree4("Tree 4"));
-    assert(!testTree5("Tree 5"));
-    assert(testTree6("Tree 6"));
+    assert(testTree1("Graph 1"));
+    assert(!testTree2("Graph 2"));
+    assert(testTree3("Graph 3"));
+    assert(!testTree4("Graph 4"));
+    assert(!testTree5("Graph 5"));
+    assert(testTree6("Graph 6"));
 }
 
 int main() {

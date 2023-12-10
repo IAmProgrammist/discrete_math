@@ -22,7 +22,7 @@ struct Forest {
 };
 
 template <typename N, typename V>
-struct ShortestWay {
+struct ShortestWayTree {
     std::vector<bool> reachableNodes;
     std::vector<V> distances;
     std::vector<int> prevNodesIndices;
@@ -71,7 +71,7 @@ public:
     virtual bool isChainBetweenNodesExist(N* start, N* end) = 0;
     virtual int getNodesSize() = 0;
 
-    virtual ShortestWay<N, EdgeValueType> getShortestWay(N* start, N* target) = 0;
+    virtual ShortestWayTree<N, EdgeValueType> getShortestWay(N* start, N* target) = 0;
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -378,7 +378,7 @@ public:
         return this->nodes.size();
     }
 
-    ShortestWay<N, EdgeValueType> getShortestWay(N* start, N* target) {
+    ShortestWayTree<N, EdgeValueType> getShortestWay(N* start, N* target) {
         int root = -1;
         int end = -1;
         for (int i = 0; i < this->nodes.size() && (root == -1 || end == -1); i++) {
@@ -388,7 +388,7 @@ public:
 
         if (root == -1 || end == -1) throw std::invalid_argument("Node doesn't belong to graph");
 
-        ShortestWay<N, EdgeValueType> result;
+        ShortestWayTree<N, EdgeValueType> result;
         result.rootNodeIndex = root;
         result.endNodeIndex = end;
 
