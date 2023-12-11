@@ -72,6 +72,10 @@ public:
     virtual int getNodesSize() = 0;
 
     virtual ShortestWayTree<N, EdgeValueType> getShortestWay(N* start, N* target) = 0;
+    
+    virtual ShortestWayTree<N, EdgeValueType> getShortestWay(N* start) = 0;
+
+    virtual std::vector<std::vector<EdgeValueType>> getShortestWayMatrix() = 0;
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -378,15 +382,19 @@ public:
         return this->nodes.size();
     }
 
+    ShortestWayTree<N, EdgeValueType> getShortestWay(N* start) {
+        return getShortestWay(start, nullptr);
+    }
+
     ShortestWayTree<N, EdgeValueType> getShortestWay(N* start, N* target) {
         int root = -1;
         int end = -1;
         for (int i = 0; i < this->nodes.size() && (root == -1 || end == -1); i++) {
             if (root == -1 && start->equals(*this->nodes[i])) root = i;
-            if (end == -1 && target->equals(*this->nodes[i])) end = i;
+            if (target != nullptr && end == -1 && target->equals(*this->nodes[i])) end = i;
         }
 
-        if (root == -1 || end == -1) throw std::invalid_argument("Node doesn't belong to graph");
+        if (root == -1 || (end == -1 && target != nullptr)) throw std::invalid_argument("Node doesn't belong to graph");
 
         ShortestWayTree<N, EdgeValueType> result;
         result.rootNodeIndex = root;
@@ -436,6 +444,20 @@ public:
 
             root = minLenNode;
         }  
+
+        return result;
+    }
+
+    std::vector<std::vector<EdgeValueType>> getShortestWayMatrix() {
+        std::vector<std::vector<EdgeValueType>> result(this->nodes.size(), 
+            std::vector<EdgeValueType>(this->nodes.size()));
+
+        for (int i = 0; i < this->nodes.size(); i++) {
+            auto swt = getShortestWay(this->nodes[i]);
+
+            for (int j = 0; j < this->nodes.size(); j++)
+                result[i][j] = swt.distances[j];
+        }   
 
         return result;
     }

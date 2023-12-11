@@ -12,7 +12,7 @@ std::ostream& operator<<(std::ostream& out, Vec2& o) {
 #include "../../libs/alg/alg.h"
 
 bool predicate(Vec2 a, Vec2 b) {
-    return (a.first - b.first) < (b.second - a.second);
+    return a.first <= b.second;
 }
 
 int main() {
