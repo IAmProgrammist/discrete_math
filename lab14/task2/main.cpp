@@ -1,5 +1,7 @@
 #include "../../libs/alg/alg.h"
 
+#include <map>
+
 template<typename N, typename EV>
 void printPath( ShortestWayTree<N, EV> shortestWayTree, 
 int index, bool isEnd) {
@@ -12,21 +14,26 @@ int index, bool isEnd) {
 }
 
 template<typename T, typename N>
-bool analyzeTree(N* start, N* end, T& g, std::string graphName) {
-    auto res = g.getShortestWay(start, end);
+bool analyzeTree(N* start, T& g, std::string graphName) {
+    std::map<typename T::EdgeValueType, std::pair<int, ShortestWayTree<N, typename T::EdgeValueType>>> results;
     
     for (int i = 0; i < g.nodes.size(); i++) {
-        for (int j = i + 1; j < g.nodes.size(); j++) {
-            if (res.distances[i] == res.distances[j] && res.distances[i] != std::numeric_limits<unsigned long long>::max()) {
-                std::cout << "Found shortest paths with weight of " << res.distances[i] << " in graph '" << graphName << "':\n";
-                printPath(res, i, true);
-                std::cout << "\n";
-                printPath(res, j, true);
-                std::cout << "\n" << std::endl;
+        if (start->equals(*g.nodes[i])) continue;
+        auto res = g.getShortestWay(start, g.nodes[i]);
 
-                return true;
-            }
+        if (res.distances[i] == std::numeric_limits<unsigned long long>::max()) continue;
+        if (results.find(res.distances[i]) == results.end()) {
+            results[res.distances[i]] = {i, res};
+            continue;
         }
+
+        std::cout << "Found shortest paths with weight of " << res.distances[i] << " in graph '" << graphName << "':\n";
+        printPath(results[res.distances[i]].second, results[res.distances[i]].first, true);
+        std::cout << "\n";
+        printPath(res, i, true);
+        std::cout << "\n" << std::endl;
+
+        return true;
     }
 
     std::cout << "No shortest paths with same weight in graph '" << graphName << "':\n" << std::endl;
@@ -61,7 +68,7 @@ bool testTree1(std::string graphName) {
     g.addEdge({{&N5, &N6}, 5, true});
     g.addEdge({{&N6, &N5}, 4, true});
 
-    return analyzeTree(&N1, &N6, g, graphName);
+    return analyzeTree(&N1, g, graphName);
 }
 
 bool testTree2(std::string graphName) {
@@ -92,7 +99,7 @@ bool testTree2(std::string graphName) {
     g.addEdge({{&N5, &N6}, 5, true});
     g.addEdge({{&N6, &N5}, 4, true});
 
-    return analyzeTree(&N1, &N6, g, graphName);
+    return analyzeTree(&N1, g, graphName);
 }
 
 bool testTree3(std::string graphName) {
@@ -118,7 +125,7 @@ bool testTree3(std::string graphName) {
     g.addEdge({{&N6, &N3}, 1, true});
     g.addEdge({{&N1, &N4}, 4, true});
 
-    return analyzeTree(&N1, &N6, g, graphName);
+    return analyzeTree(&N1, g, graphName);
 }
 
 bool testTree4(std::string graphName) {
@@ -147,7 +154,7 @@ bool testTree4(std::string graphName) {
     g.addEdge({{&N1, &N4}, 4, true});
     g.addEdge({{&N7, &N3}, 4, true});
 
-    return analyzeTree(&N7, &N3, g, graphName);
+    return analyzeTree(&N7, g, graphName);
 }
 
 bool testTree5(std::string graphName) {
@@ -172,7 +179,7 @@ bool testTree5(std::string graphName) {
     g.addEdge({{&N3, &N5}, 1, true});
     g.addEdge({{&N1, &N5}, 8, true});
 
-    return analyzeTree(&N1, &N5, g, graphName);
+    return analyzeTree(&N1, g, graphName);
 }
 
 bool testTree6(std::string graphName) {
@@ -200,7 +207,7 @@ bool testTree6(std::string graphName) {
     g.addEdge({{&N1, &N5}, 8, true});
     g.addEdge({{&N2, &N6}, 4, true});
 
-    return analyzeTree(&N1, &N5, g, graphName);
+    return analyzeTree(&N1, g, graphName);
 }
 
 void test() {

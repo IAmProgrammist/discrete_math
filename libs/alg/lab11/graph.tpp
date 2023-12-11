@@ -402,7 +402,7 @@ public:
 
         // Шаг 4
         // Условие root != end было заменено, чтобы строить полное дерево кратчайших путей.
-        while (true) {
+        while (root != end) {
             // Шаг 2
             for (int i = 0; i < this->nodes.size(); i++) {
                 if (this->edges[root][i] == nullptr || result.reachableNodes[i]) continue;
