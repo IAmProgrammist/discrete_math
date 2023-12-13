@@ -31,6 +31,9 @@ struct ShortestWayTree {
     int endNodeIndex;
 };
 
+template <typename E, typename EdgeValueType = typename E::NameType>
+using ShortWay = std::pair<EdgeValueType, int>;
+
 // Абстрактный класс граф, содержит виртуальные методы
 template <typename E, typename N>
 class Graph {
@@ -75,7 +78,7 @@ public:
     
     virtual ShortestWayTree<N, EdgeValueType> getShortestWay(N* start) = 0;
 
-    virtual std::vector<std::vector<EdgeValueType>> getShortestWayMatrix() = 0;
+    virtual std::vector<std::vector<ShortWay<E>>> getShortestWayMatrix() = 0;
 };
 
 template <typename E, typename N = typename E::NodeType>
@@ -448,21 +451,49 @@ public:
         return result;
     }
 
-    std::vector<std::vector<EdgeValueType>> getShortestWayMatrix() {
-        std::vector<std::vector<EdgeValueType>> result(this->nodes.size(), 
-            std::vector<EdgeValueType>(this->nodes.size()));
+    // Алгоритм Флойда
+    std::vector<std::vector<ShortWay<E>>> getShortestWayMatrix() {
+        std::vector<std::vector<ShortWay<E>>> W(this->nodes.size(), 
+            std::vector<ShortWay<E>>(this->nodes.size()));
 
-        for (int i = 0; i < this->nodes.size(); i++) {
-            auto swt = getShortestWay(this->nodes[i]);
+        for (int i = 0; i < this->nodes.size(); i++) 
+            for (int j = 0; j < this->nodes.size(); j++) {
+                auto edge = getShortestEdge(i, j);
+                if (edge == nullptr) 
+                    W[i][j] = {std::numeric_limits<EdgeValueType>::max(), -1};
+                else 
+                    W[i][j] = {edge->name, 0};
+            } 
 
-            for (int j = 0; j < this->nodes.size(); j++)
-                result[i][j] = swt.distances[j];
-        }   
+        for (int z = 0; z < this->nodes.size(); z++) 
+            for (int x = 0; x < this->nodes.size(); x++) {
+                if (W[x][z].second == -1) continue;
 
-        return result;
+                for (int y = 0; y < this->nodes.size(); y++) {
+                    if (W[z][y].second == -1) continue;
+
+                    EdgeValueType product = W[x][z].first + W[z][y].first;
+                    if (product < W[x][y].first) {
+                        W[x][y].first = product;
+                        W[x][y].second = W[z][y].second;
+                    }
+                }
+            }
+        
+        return W;
     }
 
 private:
+    E* getShortestEdge(int i, int j) {
+        if (this->edges[i][j] == nullptr) return nullptr;
+
+        int minEdgeIndex = 0;
+        for (int k = 0; k < (*this->edges[i][j]).size(); k++) 
+            if ((*this->edges[i][j])[minEdgeIndex]->current.name > (*this->edges[i][j])[k]->current.name) minEdgeIndex = k;
+
+        return &(*this->edges[i][j])[minEdgeIndex]->current;
+    }
+
     bool hasHamiltonianCycle(int originIndex, int startIndex, std::vector<bool>& takenNodes);
     bool hasEulerCycle(int originIndex, int startIndex, 
 std::vector<std::vector<bool>>& visited, int visitedSize, int totalEdgesCount);
