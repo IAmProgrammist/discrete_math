@@ -456,13 +456,14 @@ public:
         std::vector<std::vector<ShortWay<E>>> W(this->nodes.size(), 
             std::vector<ShortWay<E>>(this->nodes.size()));
 
+        // Формирование M
         for (int i = 0; i < this->nodes.size(); i++) 
             for (int j = 0; j < this->nodes.size(); j++) {
                 auto edge = getShortestEdge(i, j);
                 if (edge == nullptr) 
                     W[i][j] = {std::numeric_limits<EdgeValueType>::max(), -1};
                 else 
-                    W[i][j] = {edge->name, 0};
+                    W[i][j] = {edge->name, (i == j ? 0 : i)};
             } 
 
         for (int z = 0; z < this->nodes.size(); z++) 
